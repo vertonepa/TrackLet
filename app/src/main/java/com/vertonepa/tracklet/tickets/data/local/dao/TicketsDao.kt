@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface TicketsDao {
     @Query(
         """
-        SELECT ticket_id, ticket_heading, ticket_task_progress, payment_status 
+        SELECT ticket_id, ticket_heading, ticket_publish_date 
         FROM tickets_table 
         ORDER BY order_number DESC
         """
@@ -22,12 +22,12 @@ interface TicketsDao {
 
     @Query(
         """
-        SELECT ticket_id, ticket_heading, ticket_description, ticket_task_progress, payment_status 
+        SELECT ticket_id, ticket_heading, ticket_description, ticket_task_progress, payment_status, ticket_publish_date
         FROM tickets_table
         WHERE ticket_id = :id
         """
     )
-    suspend fun getTicketDetails(id: String): TicketDetailsLocal
+    fun getTicketDetails(id: String): Flow<TicketDetailsLocal>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNewTicket(ticket: TicketsEntity): Long
