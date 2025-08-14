@@ -1,14 +1,14 @@
 package com.vertonepa.tracklet.tickets.domain.repository
 
+import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
-import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import kotlinx.coroutines.flow.Flow
 
 interface ITicketsRepository {
     fun getTicketsFromLocal(): Flow<List<TicketListModel>>
 
-    suspend fun getTicketDetailsFromLocalById(ticketId: String): TicketDetailsModel
+    fun getTicketDetailsFromLocalById(ticketId: String): Flow<TicketDetailsModel>
 
     suspend fun createNewTicket(newTicket: TicketCreationModel): Long
 
@@ -16,5 +16,5 @@ interface ITicketsRepository {
 
     suspend fun updateTicketProgress(id: String, taskProgress: String)
 
-    suspend fun deleteTicketById(id: String): Int
+    suspend fun deleteTicketById(id: String)
 }

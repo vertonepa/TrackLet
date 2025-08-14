@@ -9,18 +9,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import java.time.LocalDate
 
 @Composable
 fun TicketItem(
     title: String,
-    progress: String,
+    date: LocalDate,
     deleteTicket: () -> Unit,
     navigateToDetails: () -> Unit,
 ) {
     ListItem(
         modifier = Modifier.clickable { navigateToDetails() },
         headlineContent = { Text(title) },
-        supportingContent = { Text(progress) },
+        supportingContent = { Text(date.toString()) },
         trailingContent = {
             Icon(
                 Icons.Default.Delete,
@@ -36,7 +37,7 @@ fun TicketItem(
 private fun Preview() {
     TicketItem(
         title = "Title",
-        progress = "Progress",
+        date = LocalDate.now(),
         deleteTicket = {},
         navigateToDetails = {}
     )

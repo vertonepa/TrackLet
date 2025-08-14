@@ -4,7 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import androidx.navigation.toRoute
+import com.vertonepa.tracklet.tickets.presentation.details.TicketDetailsRoute
+import com.vertonepa.tracklet.tickets.presentation.editing.TicketEditingRoute
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.TicketListRoute
 import kotlinx.serialization.Serializable
 
@@ -35,7 +36,16 @@ fun NavGraphBuilder.ticketsGraph(navController: NavHostController) {
         }
 
         composable<Details> {
-            val details: Details = it.toRoute()
+            TicketDetailsRoute(
+                navigateToBack = { navController.popBackStack() },
+                navigateToEditing = { id -> navController.navigate(Editing(id = id)) }
+            )
+        }
+
+        composable<Editing> {
+            TicketEditingRoute(
+                navigateToBack = { navController.popBackStack() }
+            )
         }
     }
 }
