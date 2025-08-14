@@ -1,8 +1,5 @@
 package com.vertonepa.tracklet.tickets.presentation.details
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,25 +8,24 @@ import com.vertonepa.tracklet.navigation.Details
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.usecases.DeleteTicketByIdUseCase
 import com.vertonepa.tracklet.tickets.domain.usecases.GetTicketDetailsUseCase
-import com.vertonepa.tracklet.tickets.domain.usecases.UpdateTicketInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val getTicketDetailsUseCase: GetTicketDetailsUseCase,
-    private val updateTicketInfoUseCase: UpdateTicketInfoUseCase,
     private val deleteTicketByIdUseCase: DeleteTicketByIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<DetailsUIState>(DetailsUIState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    var isEditingModeEnabled by mutableStateOf(false)
-        private set
+    private var detailsJob: Job? = null
 
     private val detailsRoute: Details = savedStateHandle.toRoute()
     private val ticketDetailsId = savedStateHandle.getStateFlow(
@@ -42,34 +38,24 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun loadDetails() {
-        viewModelScope.launch {
-            val ticket = getTicketDetailsUseCase(id = ticketDetailsId)
-            _uiState.value = DetailsUIState.Success(ticket)
+        detailsJob = viewModelScope.launch {
+            getTicketDetailsUseCase(id = ticketDetailsId).collectLatest {
+                _uiState.value = DetailsUIState.Success(it)
+            }
         }
     }
 
-    fun onUpdateTicketState(updateHeading: String? = null, updateDescription: String? = null) {
+
+    fun onClickDelete(id: String) {
         viewModelScope.launch {
-            updateTicketInfoUseCase(
-                id = ticketDetailsId,
-                heading = updateHeading,
-                description = updateDescription
-            )
+            deleteTicketByIdUseCase(ticketId = id)
+            onDelete()
         }
     }
 
-    fun onDoubleClickToUpdate() {
-        isEditingModeEnabled = !isEditingModeEnabled
-    }
-
-    fun onHeadingChanged() {
-
-    }
-
-    fun onClickDelete() {
-        viewModelScope.launch {
-            deleteTicketByIdUseCase(ticketId = ticketDetailsId)
-        }
+    private fun onDelete() {
+        detailsJob?.cancel()
+        _uiState.value = DetailsUIState.Error
     }
 
 }
@@ -77,4 +63,5 @@ class DetailsViewModel @Inject constructor(
 sealed class DetailsUIState() {
     data object Loading : DetailsUIState()
     data class Success(val ticketDetails: TicketDetailsModel) : DetailsUIState()
+    data object Error : DetailsUIState()
 }

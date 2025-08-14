@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
+import java.time.LocalDate
 
 @Composable
 fun TicketListRoute(
@@ -41,12 +42,12 @@ private fun TicketListScreen(
     when (uiState) {
         TicketListUIState.EmptyList -> EmptyListScreen()
         TicketListUIState.Loading -> LoadingScreen()
-        is TicketListUIState.Tickets -> {
+        is TicketListUIState.Success -> {
             LazyColumn {
                 items(items = uiState.tickets) {
                     TicketItem(
                         title = it.ticketHeading,
-                        progress = it.ticketTaskProgress,
+                        date = it.ticketPublishDate,
                         deleteTicket = { onDeleteTicket(it.ticketId) }
                     ) {
                         navigateToDetails(it.ticketId)
@@ -81,12 +82,12 @@ private fun EmptyListScreen() {
 @Composable
 private fun Success_Preview() {
     TicketListScreen(
-        uiState = TicketListUIState.Tickets(
+        uiState = TicketListUIState.Success(
             listOf(
-                TicketListModel(ticketId = "a", "Título 1", "Creado"),
-                TicketListModel(ticketId = "b", "Título 2", "Creado"),
-                TicketListModel(ticketId = "c", "Título 3", "En progreso"),
-                TicketListModel(ticketId = "d", "Título 4", "Creado"),
+                TicketListModel(ticketId = "a", "Título 1", LocalDate.now()),
+                TicketListModel(ticketId = "b", "Título 2", LocalDate.now()),
+                TicketListModel(ticketId = "c", "Título 3", LocalDate.now()),
+                TicketListModel(ticketId = "d", "Título 4", LocalDate.now()),
             )
         ),
         onDeleteTicket = {},
@@ -98,10 +99,4 @@ private fun Success_Preview() {
 @Composable
 private fun Empty_Preview() {
     EmptyListScreen()
-}
-
-@Preview
-@Composable
-private fun Loading_Preview() {
-    LoadingScreen()
 }

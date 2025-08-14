@@ -19,3 +19,6 @@ object Settings
 
 @Serializable
 data class Details(val id: String)
+
+@Serializable
+data class Editing(val id: String)

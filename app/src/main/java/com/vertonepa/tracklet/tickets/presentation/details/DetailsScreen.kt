@@ -35,23 +35,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.presentation.details.components.DetailsMenu
+import java.time.LocalDate
 
 @Composable
-fun TicketDetailsRoute(viewModel: DetailsViewModel = hiltViewModel(), navigateToBack: () -> Unit) {
+fun TicketDetailsRoute(
+    viewModel: DetailsViewModel = hiltViewModel(),
+    navigateToBack: () -> Unit,
+    navigateToEditing: (String) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isEditingModeEnabled = viewModel.isEditingModeEnabled
 
     TicketDetailsScreen(
         uiState = uiState,
-        isEditingModeEnabled = isEditingModeEnabled,
-        onDoubleClickToUpdate = viewModel::onDoubleClickToUpdate,
-        onClickDelete = viewModel::onClickDelete,
-        onUpdateTicketState = { heading, desc ->
-            viewModel.onUpdateTicketState(
-                heading, desc
-            )
-        },
-        navigateToBack = { navigateToBack() }
+        onClickDelete = { viewModel.onClickDelete(it) },
+        navigateToBack = { navigateToBack() },
+        navigateToEditing = { navigateToEditing(it) }
     )
 }
 
@@ -59,11 +57,9 @@ fun TicketDetailsRoute(viewModel: DetailsViewModel = hiltViewModel(), navigateTo
 @Composable
 private fun TicketDetailsScreen(
     uiState: DetailsUIState,
-    onClickDelete: () -> Unit,
-    onUpdateTicketState: (String?, String?) -> Unit,
-    isEditingModeEnabled: Boolean,
-    onDoubleClickToUpdate: () -> Unit,
-    navigateToBack: () -> Unit
+    onClickDelete: (String) -> Unit,
+    navigateToBack: () -> Unit,
+    navigateToEditing: (String) -> Unit
 ) {
 
     when (uiState) {
@@ -73,6 +69,7 @@ private fun TicketDetailsScreen(
 
         is DetailsUIState.Success -> {
             val scrollState = rememberScrollState()
+            val ticket = uiState.ticketDetails
 
             Scaffold(
                 topBar = {
@@ -87,20 +84,16 @@ private fun TicketDetailsScreen(
                             }
                         },
                         actions = {
-                            //TODO Meter dropdown acá
                             DetailsMenu(
                                 onClickDelete = {
-                                    onClickDelete()
-                                    navigateToBack()
+                                    onClickDelete(ticket.ticketId)
                                 },
                                 onClickEdit = {
+                                    navigateToEditing(ticket.ticketId)
                                 })
                         }
                     )
                 }) { paddingValues ->
-
-                val ticket = uiState.ticketDetails
-
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -130,9 +123,9 @@ private fun TicketDetailsScreen(
                         )
                         SuggestionChip(
                             onClick = {},
-                            label = { Text(text = ticket.paymentStatus ?: "") })
+                            label = { Text(text = ticket.paymentStatus) })
                         Spacer(modifier = Modifier.weight(2f))
-                        Text("27.4.25")
+                        Text(text = ticket.ticketPublishDate.toString())
                     }
 
                     Text(
@@ -146,6 +139,11 @@ private fun TicketDetailsScreen(
                     )
                 }
             }
+        }
+
+        DetailsUIState.Error -> {
+            LoadingDetailsScreen()
+            navigateToBack()
         }
     }
 }
@@ -170,17 +168,14 @@ private fun Preview() {
         ticketHeading = "encabezado",
         ticketDescription = "descripcion",
         paymentStatus = "Pagado",
-        ticketTaskProgress = "Creado"
+        ticketTaskProgress = "Creado",
+        ticketPublishDate = LocalDate.now()
     )
 
     TicketDetailsScreen(
-        uiState = DetailsUIState.Success(
-            ticketDetails = ticket
-        ),
+        uiState = DetailsUIState.Success(ticket),
         onClickDelete = {},
-        onUpdateTicketState = { string1, string2 -> null },
-        isEditingModeEnabled = false,
-        onDoubleClickToUpdate = {},
         navigateToBack = {},
+        navigateToEditing = {}
     )
 }

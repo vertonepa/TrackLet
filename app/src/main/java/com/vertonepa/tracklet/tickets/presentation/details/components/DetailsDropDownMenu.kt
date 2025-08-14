@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun DetailsMenu(onClickDelete: () -> Unit, onClickEdit: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
-    Box() {
+    Box {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
         }
@@ -32,7 +32,10 @@ fun DetailsMenu(onClickDelete: () -> Unit, onClickEdit: () -> Unit) {
             )
             DropdownMenuItem(
                 text = { Text("Editar") },
-                onClick = { onClickEdit() }
+                onClick = {
+                    expanded = !expanded
+                    onClickEdit()
+                }
             )
         }
     }
