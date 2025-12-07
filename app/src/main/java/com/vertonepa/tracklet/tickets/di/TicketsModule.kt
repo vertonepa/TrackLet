@@ -13,4 +13,9 @@ object TicketsModule {
     @Singleton
     @Provides
     fun provideTicketsDao(db: AppDatabase) = db.ticketsDao()
+
+    @Singleton
+    @Provides
+    fun provideTicketLogsDao(db: AppDatabase) = db.ticketLogsDao()
+
 }
