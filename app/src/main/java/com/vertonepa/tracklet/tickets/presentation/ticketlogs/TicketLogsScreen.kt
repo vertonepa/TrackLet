@@ -121,16 +121,18 @@ fun TicketLogsScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    showCreateDialog = true
-                    onUndoLongPress()
+            if (uiState is TicketLogsUIState.Success) {
+                FloatingActionButton(
+                    onClick = {
+                        showCreateDialog = true
+                        onUndoLongPress()
+                    }
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = null,
+                    )
                 }
-            ) {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = null,
-                )
             }
         }
     ) { paddingValues ->
@@ -197,29 +199,6 @@ fun TicketLogsScreen(
                     )
                 }
 
-                if (showCreateDialog) {
-                    var quantityState by remember { mutableStateOf("") }
-                    var colorState by remember { mutableStateOf("") }
-
-                    TicketLogDialog(
-                        onDismiss = { showCreateDialog = false },
-                        quantity = quantityState,
-                        color = colorState,
-                        onConfirm = {
-                            showCreateDialog = false
-                            //TODO("LocalDate.now() debe ser cambiado por un formateador común a todas las screens ")
-                            generateLog(
-                                PaymentStatus.OWES,
-                                LocalDate.now(),
-                                quantityState.toIntOrNull() ?: 0,
-                                colorState.ifEmpty { "-" }
-                            )
-                        },
-                        onQuantityChange = { quantityState = it },
-                        onColorChange = { colorState = it }
-                    )
-                }
-
                 if (showDeleteDialog) {
                     DeleteDialog(
                         onDismiss = { showDeleteDialog = false },
@@ -233,6 +212,31 @@ fun TicketLogsScreen(
             }
         }
     }
+
+    if (showCreateDialog) {
+        var quantityState by remember { mutableStateOf("") }
+        var colorState by remember { mutableStateOf("") }
+
+        TicketLogDialog(
+            onDismiss = { showCreateDialog = false },
+            quantity = quantityState,
+            color = colorState,
+            onConfirm = {
+                showCreateDialog = false
+                //TODO("LocalDate.now() debe ser cambiado por un formateador común a todas las screens ")
+                generateLog(
+                    PaymentStatus.OWES,
+                    LocalDate.now(),
+                    quantityState.toIntOrNull() ?: 0,
+                    colorState.ifEmpty { "-" }
+                )
+            },
+            onQuantityChange = { quantityState = it },
+            onColorChange = { colorState = it }
+        )
+    }
+
+
 }
 
 

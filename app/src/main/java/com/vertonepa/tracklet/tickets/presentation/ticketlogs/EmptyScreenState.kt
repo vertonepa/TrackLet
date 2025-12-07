@@ -36,7 +36,7 @@ fun EmptyScreenState(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { addLog },
+                .clickable { addLog() },
             textAlign = textAlign,
             color = Color(0xFF3949AB),
             text = "Agrega el primer registro",
