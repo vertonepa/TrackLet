@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -23,7 +22,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +34,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun TicketCreationRoute(
@@ -44,20 +41,18 @@ fun TicketCreationRoute(
     navigateBack: () -> Unit,
     navigateToTicketListScreen: () -> Unit,
 ) {
-    val heading by viewModel.heading.collectAsStateWithLifecycle()
-    val description by viewModel.description.collectAsState()
-    val isButtonEnabled by viewModel.isButtonEnabled.collectAsState()
+    val heading = viewModel.heading
+    val description = viewModel.description
 
     TicketCreationScreen(
         navigateBack = navigateBack,
         navigateToTicketListScreen = navigateToTicketListScreen,
         headingState = heading,
         descriptionState = description,
-        isButtonEnabled = isButtonEnabled,
         onHeadingChanged = viewModel::onHeadingChanged,
         onDescriptionChanged = viewModel::onDescriptionChanged,
         onCreateTicket = viewModel::onCreateTicket,
-        cleanData = viewModel::cleanData,
+        onClearFields = viewModel::onClearFields,
     )
 }
 
@@ -67,11 +62,10 @@ fun TicketCreationScreen(
     navigateToTicketListScreen: () -> Unit,
     headingState: String,
     descriptionState: String,
-    isButtonEnabled: Boolean,
     onHeadingChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onCreateTicket: () -> Unit,
-    cleanData: () -> Unit,
+    onClearFields: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     var showDismissDialog by remember { mutableStateOf(false) }
@@ -91,12 +85,13 @@ fun TicketCreationScreen(
                     showDismissDialog = true
                 else {
                     navigateBack()
-                    cleanData()
+                    onClearFields()
                 }
             },
-            onCreateTicket = { onCreateTicket() },
-            isButtonEnabled = { isButtonEnabled },
-            cleanData = { cleanData() },
+            onCreateTicket = onCreateTicket,
+            headingState = headingState,
+            descriptionState = descriptionState,
+            onClearFields = onClearFields,
             navigateToTicketListScreen = { navigateToTicketListScreen() }
         )
 
@@ -110,8 +105,7 @@ fun TicketCreationScreen(
             maxLines = 2,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
-            ),
-            shape = RoundedCornerShape(size = 4.dp)
+            )
         )
         OutlinedTextField(
             value = descriptionState,
@@ -122,7 +116,6 @@ fun TicketCreationScreen(
                 .heightIn(min = 150.dp, max = 250.dp),
             placeholder = { Text("Descripción") },
             maxLines = 100,
-            shape = RoundedCornerShape(size = 4.dp)
         )
         Spacer(modifier = Modifier.padding(4.dp))
 
@@ -136,7 +129,7 @@ fun TicketCreationScreen(
             confirmButton = {
                 TextButton(onClick = {
                     navigateBack()
-                    cleanData()
+                    onClearFields()
                 }) {
                     Text(text = "Confirmar")
                 }
@@ -154,12 +147,13 @@ private fun TopBar(
     modifier: Modifier = Modifier,
     onClickClose: () -> Unit,
     onCreateTicket: () -> Unit,
-    isButtonEnabled: () -> Boolean,
-    cleanData: () -> Unit,
+    headingState: String,
+    descriptionState: String,
+    onClearFields: () -> Unit,
     navigateToTicketListScreen: () -> Unit,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = { onClickClose() }) {
+        IconButton(onClick = onClickClose) {
             Icon(imageVector = Icons.Default.Close, contentDescription = null)
         }
         Text(
@@ -172,9 +166,9 @@ private fun TopBar(
             onClick = {
                 onCreateTicket()
                 navigateToTicketListScreen()
-                cleanData()
+                onClearFields()
             },
-            enabled = isButtonEnabled(),
+            enabled = headingState.isNotBlank() && descriptionState.isNotBlank(),
         ) {
             Text(text = "Crear")
         }
@@ -190,10 +184,9 @@ private fun Preview() {
         descriptionState = "",
         navigateBack = {},
         navigateToTicketListScreen = {},
-        isButtonEnabled = false,
         onHeadingChanged = {},
         onDescriptionChanged = {},
         onCreateTicket = {},
-        cleanData = {}
+        onClearFields = {}
     )
 }
