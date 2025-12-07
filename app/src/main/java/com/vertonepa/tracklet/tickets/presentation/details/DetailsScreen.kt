@@ -1,6 +1,7 @@
 package com.vertonepa.tracklet.tickets.presentation.details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +43,8 @@ import java.time.LocalDate
 fun TicketDetailsRoute(
     viewModel: DetailsViewModel = hiltViewModel(),
     navigateToBack: () -> Unit,
-    navigateToEditing: (String) -> Unit
+    navigateToEditing: (String) -> Unit,
+    navigateToTicketLogs: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -49,7 +52,8 @@ fun TicketDetailsRoute(
         uiState = uiState,
         onClickDelete = { viewModel.onClickDelete(it) },
         navigateToBack = { navigateToBack() },
-        navigateToEditing = { navigateToEditing(it) }
+        navigateToEditing = { navigateToEditing(it) },
+        navigateToTicketLogs = { navigateToTicketLogs(it) }
     )
 }
 
@@ -59,7 +63,8 @@ private fun TicketDetailsScreen(
     uiState: DetailsUIState,
     onClickDelete: (String) -> Unit,
     navigateToBack: () -> Unit,
-    navigateToEditing: (String) -> Unit
+    navigateToEditing: (String) -> Unit,
+    navigateToTicketLogs: (String) -> Unit
 ) {
 
     when (uiState) {
@@ -111,6 +116,16 @@ private fun TicketDetailsScreen(
                     ) {
                         Text("Imagenes de la db")
                     }
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clickable {
+                                navigateToTicketLogs(ticket.ticketId)
+                            }
+                            .fillMaxWidth(),
+                        text = "Consultar registros",
+                        textAlign = TextAlign.End
+                    )
                     Row(
                         Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -176,6 +191,7 @@ private fun Preview() {
         uiState = DetailsUIState.Success(ticket),
         onClickDelete = {},
         navigateToBack = {},
-        navigateToEditing = {}
+        navigateToEditing = {},
+        navigateToTicketLogs = {},
     )
 }

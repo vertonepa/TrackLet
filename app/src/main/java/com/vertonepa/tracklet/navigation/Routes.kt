@@ -22,3 +22,6 @@ data class Details(val id: String)
 
 @Serializable
 data class Editing(val id: String)
+
+@Serializable
+data class TicketLogs(val id: String)
