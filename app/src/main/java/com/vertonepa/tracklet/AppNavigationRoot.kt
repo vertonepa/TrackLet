@@ -20,8 +20,7 @@ fun AppNavigationRoot() {
     ) {
         mainScreen(
             backToMain = { navController.navigateToMainScreen() },
-            navigateToDetailsScreen = { navController.navigateToDetailsScreen(it) },
-            navigateUp = { navController.navigateUp() }
+            navigateToDetailsScreen = { navController.navigateToDetailsScreen(it) }
         )
 
         detailsScreen(

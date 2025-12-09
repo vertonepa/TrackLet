@@ -32,8 +32,7 @@ import com.vertonepa.tracklet.ui.theme.TrackletTheme
 @Composable
 fun MainNavigation(
     backToMain: () -> Unit,
-    navigateToDetailsScreen: (String) -> Unit,
-    navigateUp: () -> Unit
+    navigateToDetailsScreen: (String) -> Unit
 ) {
     val navController = rememberNavController()
     val hierarchy = navController.currentBackStackEntryAsState().value?.destination?.hierarchy
@@ -56,13 +55,8 @@ fun MainNavigation(
             navController = navController,
             startDestination = Tickets
         ) {
-            ticketListScreen(
-                navigateToDetails = navigateToDetailsScreen
-            )
-            creationScreen(
-                navigateUp = navigateUp,
-                backToMain = backToMain
-            )
+            ticketListScreen(navigateToDetails = navigateToDetailsScreen)
+            creationScreen(backToMain = backToMain)
             settingsScreen()
         }
     }
@@ -103,6 +97,9 @@ fun MainBottomBar(
 @Composable
 private fun Preview() {
     TrackletTheme {
-        MainNavigation(backToMain = {}, navigateToDetailsScreen = {}, navigateUp = {})
+        MainNavigation(
+            backToMain = {},
+            navigateToDetailsScreen = {}
+        )
     }
 }

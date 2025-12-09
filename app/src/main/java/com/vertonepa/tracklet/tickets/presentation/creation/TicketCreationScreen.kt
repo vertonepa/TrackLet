@@ -38,15 +38,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun TicketCreationRoute(
     viewModel: TicketCreationViewModel = hiltViewModel(),
-    navigateBack: () -> Unit,
-    backToMain: () -> Unit,
+    backToMain: () -> Unit
 ) {
     val heading = viewModel.heading
     val description = viewModel.description
 
     TicketCreationScreen(
-        navigateBack = navigateBack,
-        navigateToTicketListScreen = backToMain,
+        backToMain = backToMain,
         headingState = heading,
         descriptionState = description,
         onHeadingChanged = viewModel::onHeadingChanged,
@@ -58,8 +56,7 @@ fun TicketCreationRoute(
 
 @Composable
 fun TicketCreationScreen(
-    navigateBack: () -> Unit,
-    navigateToTicketListScreen: () -> Unit,
+    backToMain: () -> Unit,
     headingState: String,
     descriptionState: String,
     onHeadingChanged: (String) -> Unit,
@@ -84,7 +81,7 @@ fun TicketCreationScreen(
                 if (headingState.isNotEmpty() || descriptionState.isNotEmpty())
                     showDismissDialog = true
                 else {
-                    navigateBack()
+                    backToMain()
                     onClearFields()
                 }
             },
@@ -92,7 +89,7 @@ fun TicketCreationScreen(
             headingState = headingState,
             descriptionState = descriptionState,
             onClearFields = onClearFields,
-            navigateToTicketListScreen = { navigateToTicketListScreen() }
+            navigateToTicketListScreen = { backToMain() }
         )
 
         OutlinedTextField(
@@ -128,7 +125,7 @@ fun TicketCreationScreen(
             onDismissRequest = { showDismissDialog = false },
             confirmButton = {
                 TextButton(onClick = {
-                    navigateBack()
+                    backToMain()
                     onClearFields()
                 }) {
                     Text(text = "Confirmar")
@@ -182,8 +179,7 @@ private fun Preview() {
     TicketCreationScreen(
         headingState = "",
         descriptionState = "",
-        navigateBack = {},
-        navigateToTicketListScreen = {},
+        backToMain = {},
         onHeadingChanged = {},
         onDescriptionChanged = {},
         onCreateTicket = {},

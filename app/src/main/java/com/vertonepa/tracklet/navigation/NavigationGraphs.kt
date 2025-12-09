@@ -11,14 +11,10 @@ import kotlinx.serialization.Serializable
 object TicketCreation
 
 fun NavGraphBuilder.creationScreen(
-    navigateUp: () -> Unit,
     backToMain: () -> Unit
 ) {
     composable<TicketCreation> {
-        TicketCreationRoute(
-            navigateBack = navigateUp,
-            backToMain = backToMain
-        )
+        TicketCreationRoute(backToMain = backToMain)
     }
 }
 
