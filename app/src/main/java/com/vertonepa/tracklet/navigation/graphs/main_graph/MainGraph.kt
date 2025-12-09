@@ -11,7 +11,7 @@ data object MainGraph
 
 fun NavGraphBuilder.mainScreen(
     backToMain: () -> Unit,
-    navigateToDetailsScreen: (String) -> Unit
+    navigateToDetailsScreen: (Int) -> Unit
 ) {
     composable<MainGraph> {
         MainNavigation(

@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentStatus
+import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.UiTotals
 import java.time.LocalDate
 
@@ -139,7 +139,7 @@ private fun TicketLogItem_Preview() {
         isSelected = true,
         productColor = "Rojo",
         productQuantity = 12,
-        paymentState = PaymentStatus.OWES.status,
+        paymentState = PaymentState.OWES.state,
         hasMark = false,
         shouldShowBottomSheet = {},
         onClickCard = {},

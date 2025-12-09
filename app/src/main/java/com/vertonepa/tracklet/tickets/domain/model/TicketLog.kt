@@ -1,13 +1,13 @@
 package com.vertonepa.tracklet.tickets.domain.model
 
-import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentStatus
+import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import java.time.LocalDate
 import java.util.UUID
 
 data class TicketLog(
-    val logId: Int = -1,
-    val ticketId: UUID,
-    val paymentState: String = PaymentStatus.OWES.status,
+    val logId: Int = 0,
+    val ticketId: Int,
+    val paymentState: String = PaymentState.OWES.state,
     val date: LocalDate,
     val quantity: Int,
     val color: String,

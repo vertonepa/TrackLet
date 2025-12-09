@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.LocalDate
-import java.util.UUID
 
 @Entity(
     foreignKeys = [
@@ -20,7 +19,7 @@ import java.util.UUID
 data class TicketLogsEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "log_id") val logId: Int = 0,
-    @ColumnInfo(name = "ticket_id") val ticketId: UUID,
+    @ColumnInfo(name = "ticket_id") val ticketId: Int,
     @ColumnInfo(name = "payment_state") val paymentState: String,
     val date: LocalDate,
     val quantity: Int,

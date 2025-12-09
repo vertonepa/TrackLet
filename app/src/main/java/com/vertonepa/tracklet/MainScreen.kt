@@ -32,7 +32,7 @@ import com.vertonepa.tracklet.ui.theme.TrackletTheme
 @Composable
 fun MainNavigation(
     backToMain: () -> Unit,
-    navigateToDetailsScreen: (String) -> Unit
+    navigateToDetailsScreen: (Int) -> Unit
 ) {
     val navController = rememberNavController()
     val hierarchy = navController.currentBackStackEntryAsState().value?.destination?.hierarchy

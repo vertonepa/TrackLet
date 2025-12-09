@@ -1,10 +1,9 @@
-package com.vertonepa.tracklet.tickets.data.local.util
+package com.vertonepa.tracklet.tickets.data.local.typeconverter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.UUID
 
 @ProvidedTypeConverter
 class Converter {
@@ -19,15 +18,4 @@ class Converter {
     fun toLocalDate(date: String): LocalDate {
         return LocalDate.parse(date, formatter)
     }
-
-    @TypeConverter
-    fun fromUUID(uuid: UUID): String {
-        return uuid.toString()
-    }
-
-    @TypeConverter
-    fun toUUID(uuid: String): UUID {
-        return UUID.fromString(uuid)
-    }
-
 }

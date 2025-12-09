@@ -20,7 +20,7 @@ interface TicketLogsDao {
         ORDER BY log_id DESC
         """
     )
-    fun getTicketLogsById(id: UUID): Flow<List<TicketLogsEntity>>
+    fun getTicketLogsById(id: Int): Flow<List<TicketLogsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTicketLog(ticketLog: TicketLogsEntity)
@@ -32,7 +32,7 @@ interface TicketLogsDao {
         WHERE ticket_id = :id
         """
     )
-    fun getTotals(id: UUID): Flow<TotalsLocal>
+    fun getTotals(id: Int): Flow<TotalsLocal>
 
     @Query("DELETE FROM TicketLogsEntity WHERE log_id IN (:ids)")
     suspend fun deleteLogFromLocal(ids: Set<Int>)

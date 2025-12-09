@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.vertonepa.tracklet.navigation.graphs.details_graph.TicketLogs
 import com.vertonepa.tracklet.tickets.domain.model.TicketLog
-import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentStatus
+import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import com.vertonepa.tracklet.tickets.domain.repository.TicketLogsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,11 +35,10 @@ class TicketLogsViewModel @Inject constructor(
         key = "ticketIdKey",
         initialValue = ticketLogsRoute.id
     ).value
-    val ticketId: UUID = UUID.fromString(_ticketId)
+    val ticketId: Int = _ticketId
 
     val uiState =
-        //TODO("UUID.fromString() debe ser quitado cuando se solucione el tipo de id String")
-        ticketLogsRepository.getLogs(UUID.fromString(_ticketId))
+        ticketLogsRepository.getLogs(_ticketId)
             .map { ticketLogs ->
                 if (ticketLogs.isEmpty()) TicketLogsUIState.Empty
                 else TicketLogsUIState.Success(ticketLogs = ticketLogs)
@@ -52,7 +50,7 @@ class TicketLogsViewModel @Inject constructor(
             )
 
     val totalsState = ticketLogsRepository
-        .getTotals(UUID.fromString(_ticketId))
+        .getTotals(_ticketId)
         .map { it.toUi() }
         .stateIn(
             scope = viewModelScope,
@@ -61,7 +59,7 @@ class TicketLogsViewModel @Inject constructor(
         )
 
     fun onGenerateLog(
-        paymentState: PaymentStatus,
+        paymentState: PaymentState,
         date: LocalDate,
         quantity: Int,
         color: String
@@ -70,7 +68,7 @@ class TicketLogsViewModel @Inject constructor(
             ticketLogsRepository.generateLog(
                 TicketLog(
                     ticketId = ticketId,
-                    paymentState = paymentState.status,
+                    paymentState = paymentState.state,
                     date = date,
                     quantity = quantity,
                     color = color

@@ -1,10 +1,10 @@
 package com.vertonepa.tracklet.tickets.domain.usecases
 
-import com.vertonepa.tracklet.tickets.domain.repository.ITicketsRepository
+import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
 import javax.inject.Inject
 
-class UpdateTicketInfoUseCase @Inject constructor(private val repository: ITicketsRepository) {
-    suspend operator fun invoke(id: String, heading: String? = null, description: String? = null) {
+class UpdateTicketInfoUseCase @Inject constructor(private val repository: TicketsRepository) {
+    suspend operator fun invoke(id: Int, heading: String? = null, description: String? = null) {
         repository.updateTicketInfo(id, heading, description)
     }
 }

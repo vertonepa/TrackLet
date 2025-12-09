@@ -46,7 +46,7 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    fun onClickDelete(id: String) {
+    fun onClickDelete(id: Int) {
         viewModelScope.launch {
             deleteTicketByIdUseCase(ticketId = id)
             onDelete()

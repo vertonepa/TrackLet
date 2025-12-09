@@ -22,7 +22,7 @@ import java.time.LocalDate
 @Composable
 fun TicketListRoute(
     viewModel: TicketListViewModel = hiltViewModel(),
-    navigateToDetails: (String) -> Unit
+    navigateToDetails: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -36,8 +36,8 @@ fun TicketListRoute(
 @Composable
 private fun TicketListScreen(
     uiState: TicketListUIState,
-    onDeleteTicket: (String) -> Unit,
-    navigateToDetails: (String) -> Unit
+    onDeleteTicket: (Int) -> Unit,
+    navigateToDetails: (Int) -> Unit
 ) {
     when (uiState) {
         TicketListUIState.EmptyList -> EmptyListScreen()
@@ -84,10 +84,10 @@ private fun Success_Preview() {
     TicketListScreen(
         uiState = TicketListUIState.Success(
             listOf(
-                TicketListModel(ticketId = "a", "Título 1", LocalDate.now()),
-                TicketListModel(ticketId = "b", "Título 2", LocalDate.now()),
-                TicketListModel(ticketId = "c", "Título 3", LocalDate.now()),
-                TicketListModel(ticketId = "d", "Título 4", LocalDate.now()),
+                TicketListModel(ticketId = 0, "Título 1", LocalDate.now()),
+                TicketListModel(ticketId = 1, "Título 2", LocalDate.now()),
+                TicketListModel(ticketId = 2, "Título 3", LocalDate.now()),
+                TicketListModel(ticketId = 3, "Título 4", LocalDate.now()),
             )
         ),
         onDeleteTicket = {},

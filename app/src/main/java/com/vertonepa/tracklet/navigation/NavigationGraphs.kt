@@ -26,7 +26,7 @@ fun NavController.navigateToTicketCreation() {
 object Tickets
 
 fun NavGraphBuilder.ticketListScreen(
-    navigateToDetails: (String) -> Unit
+    navigateToDetails: (Int) -> Unit
 ) {
     composable<Tickets> {
         TicketListRoute(

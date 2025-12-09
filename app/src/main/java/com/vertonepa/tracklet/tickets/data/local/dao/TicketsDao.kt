@@ -15,36 +15,36 @@ interface TicketsDao {
         """
         SELECT ticket_id, ticket_heading, ticket_publish_date 
         FROM tickets_table 
-        ORDER BY order_number DESC
+        ORDER BY ticket_id DESC
         """
     )
     fun getTicketList(): Flow<List<TicketListLocal>>
 
     @Query(
         """
-        SELECT ticket_id, ticket_heading, ticket_description, ticket_task_progress, payment_status, ticket_publish_date
+        SELECT ticket_id, ticket_heading, ticket_description, ticket_task_progress, payment_state, ticket_publish_date
         FROM tickets_table
         WHERE ticket_id = :id
         """
     )
-    fun getTicketDetails(id: String): Flow<TicketDetailsLocal>
+    fun getTicketDetails(id: Int): Flow<TicketDetailsLocal>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNewTicket(ticket: TicketsEntity): Long
 
     @Query("UPDATE tickets_table SET ticket_heading = :heading WHERE ticket_id = :id")
-    suspend fun updateTicketHeading(id: String, heading: String)
+    suspend fun updateTicketHeading(id: Int, heading: String)
 
     @Query("UPDATE tickets_table SET ticket_description = :description WHERE ticket_id = :id")
-    suspend fun updateTicketDescription(id: String, description: String)
+    suspend fun updateTicketDescription(id: Int, description: String)
 
     @Query("UPDATE tickets_table SET ticket_task_progress = :taskProgress WHERE ticket_id = :ticketId")
-    suspend fun updateTicketProgress(ticketId: String, taskProgress: String)
+    suspend fun updateTicketProgress(ticketId: Int, taskProgress: String)
 
-    @Query("UPDATE tickets_table SET payment_status = :changeStatus WHERE ticket_id = :ticketId")
-    suspend fun updatePaymentStatus(ticketId: String, changeStatus: String)
+    @Query("UPDATE tickets_table SET payment_state = :changeState WHERE ticket_id = :ticketId")
+    suspend fun updatePaymentStatus(ticketId: Int, changeState: String)
 
     @Query("DELETE FROM tickets_table WHERE ticket_id = :id")
-    suspend fun deleteTicket(id: String): Int
+    suspend fun deleteTicket(id: Int): Int
 
 }

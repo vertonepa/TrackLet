@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface TicketLogsRepository {
     suspend fun generateLog(ticketLog: TicketLog)
-    fun getLogs(id: UUID): Flow<List<TicketLog>>
-    fun getTotals(id: UUID): Flow<Totals>
+    fun getLogs(id: Int): Flow<List<TicketLog>>
+    fun getTotals(id: Int): Flow<Totals>
     suspend fun logDelete(ids: Set<Int>)
 }

@@ -9,17 +9,17 @@ import com.vertonepa.tracklet.tickets.presentation.ticketlogs.TicketLogsRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Details(val id: String)
+data class Details(val id: Int)
 
 @Serializable
-data class Editing(val id: String)
+data class Editing(val id: Int)
 
 @Serializable
-data class TicketLogs(val id: String)
+data class TicketLogs(val id: Int)
 
 fun NavGraphBuilder.detailsScreen(
-    navigateToEditing: (String) -> Unit,
-    navigateToTicketLogs: (String) -> Unit,
+    navigateToEditing: (Int) -> Unit,
+    navigateToTicketLogs: (Int) -> Unit,
     navigateUp: () -> Unit
 ) {
     composable<Details> {
@@ -41,14 +41,14 @@ fun NavGraphBuilder.detailsScreen(
     }
 }
 
-fun NavController.navigateToDetailsScreen(id: String) {
+fun NavController.navigateToDetailsScreen(id: Int) {
     navigate(Details(id))
 }
 
-fun NavController.navigateToEditingScreen(id: String) {
+fun NavController.navigateToEditingScreen(id: Int) {
     navigate(Editing(id))
 }
 
-fun NavController.navigateToTicketLogsScreen(id: String) {
+fun NavController.navigateToTicketLogsScreen(id: Int) {
     navigate(TicketLogs(id))
 }

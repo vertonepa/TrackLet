@@ -29,7 +29,7 @@ class TicketListViewModel @Inject constructor(
                 initialValue = TicketListUIState.Loading
             )
 
-    fun onDeleteTicket(id: String) {
+    fun onDeleteTicket(id: Int) {
         viewModelScope.launch {
             deleteTicketByIdUseCase(id)
         }

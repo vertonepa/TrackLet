@@ -31,7 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vertonepa.tracklet.core.ui.BottomSheetOptions
 import com.vertonepa.tracklet.core.ui.TrackletBottomSheet
 import com.vertonepa.tracklet.tickets.domain.model.TicketLog
-import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentStatus
+import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.LoadingScreen
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.components.DeleteDialog
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.components.MultiSelectionTopBar
@@ -39,7 +39,7 @@ import com.vertonepa.tracklet.tickets.presentation.ticketlogs.components.Product
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.components.TicketLogDialog
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.components.TicketLogItem
 import java.time.LocalDate
-import java.util.UUID
+import kotlin.random.Random
 
 
 @Composable
@@ -82,7 +82,7 @@ fun TicketLogsScreen(
     totalsState: UiTotals,
     selectedItems: Set<Int>,
     isMultiSelectionEnabled: Boolean,
-    generateLog: (PaymentStatus, LocalDate, Int, String) -> Unit,
+    generateLog: (PaymentState, LocalDate, Int, String) -> Unit,
     navigateToBack: () -> Unit,
     onItemClick: (Int) -> Unit,
     onItemLongPress: (Int) -> Unit,
@@ -225,7 +225,7 @@ fun TicketLogsScreen(
                 showCreateDialog = false
                 //TODO("LocalDate.now() debe ser cambiado por un formateador común a todas las screens ")
                 generateLog(
-                    PaymentStatus.OWES,
+                    PaymentState.OWES,
                     LocalDate.now(),
                     quantityState.toIntOrNull() ?: 0,
                     colorState.ifEmpty { "-" }
@@ -243,7 +243,7 @@ fun TicketLogsScreen(
 @Preview
 @Composable
 private fun Preview() {
-    val id = UUID.randomUUID()
+    val id = Random.nextInt()
     TicketLogsScreen(
         uiState =
             TicketLogsUIState.Success(

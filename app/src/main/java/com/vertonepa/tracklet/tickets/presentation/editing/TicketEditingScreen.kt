@@ -129,10 +129,10 @@ private fun Preview() {
     TicketEditingScreen(
         uiState = EditingUIState.Success(
             ticketDetails = TicketDetailsModel(
-                ticketId = "",
+                ticketId = 0,
                 ticketHeading = "Heading",
                 ticketDescription = "Description",
-                paymentStatus = "Payment",
+                paymentState = "Payment",
                 ticketTaskProgress = "En progreso",
                 ticketPublishDate = LocalDate.now()
             )
