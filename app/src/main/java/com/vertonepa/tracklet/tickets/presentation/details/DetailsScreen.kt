@@ -42,7 +42,7 @@ import java.time.LocalDate
 @Composable
 fun TicketDetailsRoute(
     viewModel: DetailsViewModel = hiltViewModel(),
-    navigateToBack: () -> Unit,
+    navigateUp: () -> Unit,
     navigateToEditing: (String) -> Unit,
     navigateToTicketLogs: (String) -> Unit
 ) {
@@ -51,7 +51,7 @@ fun TicketDetailsRoute(
     TicketDetailsScreen(
         uiState = uiState,
         onClickDelete = { viewModel.onClickDelete(it) },
-        navigateToBack = { navigateToBack() },
+        navigateToBack = { navigateUp() },
         navigateToEditing = { navigateToEditing(it) },
         navigateToTicketLogs = { navigateToTicketLogs(it) }
     )

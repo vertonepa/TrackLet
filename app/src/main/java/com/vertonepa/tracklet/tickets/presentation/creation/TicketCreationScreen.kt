@@ -39,14 +39,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun TicketCreationRoute(
     viewModel: TicketCreationViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
-    navigateToTicketListScreen: () -> Unit,
+    backToMain: () -> Unit,
 ) {
     val heading = viewModel.heading
     val description = viewModel.description
 
     TicketCreationScreen(
         navigateBack = navigateBack,
-        navigateToTicketListScreen = navigateToTicketListScreen,
+        navigateToTicketListScreen = backToMain,
         headingState = heading,
         descriptionState = description,
         onHeadingChanged = viewModel::onHeadingChanged,

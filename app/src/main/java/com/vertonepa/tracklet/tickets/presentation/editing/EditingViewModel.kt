@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.Editing
+import com.vertonepa.tracklet.navigation.graphs.details_graph.Editing
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.usecases.GetTicketDetailsUseCase
 import com.vertonepa.tracklet.tickets.domain.usecases.UpdateTicketInfoUseCase

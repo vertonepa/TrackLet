@@ -45,7 +45,7 @@ import java.util.UUID
 @Composable
 fun TicketLogsRoute(
     viewModel: TicketLogsViewModel = hiltViewModel(),
-    navigateToBack: () -> Unit
+    navigateUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val totalsState by viewModel.totalsState.collectAsStateWithLifecycle()
@@ -66,7 +66,7 @@ fun TicketLogsRoute(
                 color
             )
         },
-        navigateToBack = navigateToBack,
+        navigateToBack = navigateUp,
         onItemClick = { viewModel.onItemClick(it) },
         onItemLongPress = { viewModel.onItemLongPress(it) },
         onUndoLongPress = { viewModel.onUndoLongPress() },

@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.TicketLogs
+import com.vertonepa.tracklet.navigation.graphs.details_graph.TicketLogs
 import com.vertonepa.tracklet.tickets.domain.model.TicketLog
 import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentStatus
 import com.vertonepa.tracklet.tickets.domain.repository.TicketLogsRepository
