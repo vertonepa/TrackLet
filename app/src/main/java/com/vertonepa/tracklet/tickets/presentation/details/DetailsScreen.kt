@@ -42,16 +42,16 @@ import java.time.LocalDate
 @Composable
 fun TicketDetailsRoute(
     viewModel: DetailsViewModel = hiltViewModel(),
-    navigateToBack: () -> Unit,
-    navigateToEditing: (String) -> Unit,
-    navigateToTicketLogs: (String) -> Unit
+    navigateUp: () -> Unit,
+    navigateToEditing: (Int) -> Unit,
+    navigateToTicketLogs: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     TicketDetailsScreen(
         uiState = uiState,
         onClickDelete = { viewModel.onClickDelete(it) },
-        navigateToBack = { navigateToBack() },
+        navigateToBack = { navigateUp() },
         navigateToEditing = { navigateToEditing(it) },
         navigateToTicketLogs = { navigateToTicketLogs(it) }
     )
@@ -61,10 +61,10 @@ fun TicketDetailsRoute(
 @Composable
 private fun TicketDetailsScreen(
     uiState: DetailsUIState,
-    onClickDelete: (String) -> Unit,
+    onClickDelete: (Int) -> Unit,
     navigateToBack: () -> Unit,
-    navigateToEditing: (String) -> Unit,
-    navigateToTicketLogs: (String) -> Unit
+    navigateToEditing: (Int) -> Unit,
+    navigateToTicketLogs: (Int) -> Unit
 ) {
 
     when (uiState) {
@@ -138,7 +138,7 @@ private fun TicketDetailsScreen(
                         )
                         SuggestionChip(
                             onClick = {},
-                            label = { Text(text = ticket.paymentStatus) })
+                            label = { Text(text = ticket.paymentState) })
                         Spacer(modifier = Modifier.weight(2f))
                         Text(text = ticket.ticketPublishDate.toString())
                     }
@@ -179,10 +179,10 @@ private fun LoadingDetailsScreen() {
 @Composable
 private fun Preview() {
     val ticket = TicketDetailsModel(
-        ticketId = "-",
+        ticketId = 0,
         ticketHeading = "encabezado",
         ticketDescription = "descripcion",
-        paymentStatus = "Pagado",
+        paymentState = "Pagado",
         ticketTaskProgress = "Creado",
         ticketPublishDate = LocalDate.now()
     )

@@ -1,69 +1,78 @@
 package com.vertonepa.tracklet.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
-import com.vertonepa.tracklet.tickets.presentation.details.TicketDetailsRoute
-import com.vertonepa.tracklet.tickets.presentation.editing.TicketEditingRoute
-import com.vertonepa.tracklet.tickets.presentation.ticketlogs.TicketLogsRoute
+import com.vertonepa.tracklet.tickets.presentation.creation.TicketCreationRoute
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.TicketListRoute
 import kotlinx.serialization.Serializable
-import java.util.UUID
 
 @Serializable
-object HomeGraph
+object CreateTicketDestination
 
-@Serializable
-object TicketsGraph
-
-@Serializable
-object NotificationsGraph
-
-@Serializable
-object SettingsGraph
-
-fun NavGraphBuilder.homeGraph(navController: NavHostController) {
-    navigation<HomeGraph>(startDestination = Home) {
-        composable<Home> { }
+fun NavGraphBuilder.creationScreen(
+    backToMain: () -> Unit
+) {
+    composable<CreateTicketDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(700)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(700)
+            )
+        }
+    ) {
+        TicketCreationRoute(backToMain = backToMain)
     }
 }
 
-fun NavGraphBuilder.ticketsGraph(navController: NavHostController) {
-    navigation<TicketsGraph>(startDestination = Tickets) {
-        composable<Tickets> {
-            TicketListRoute(
-                navigateToDetails = { id -> navController.navigate(Details(id = id)) }
-            )
-        }
-        composable<Details> {
-            TicketDetailsRoute(
-                navigateToBack = { navController.popBackStack() },
-                navigateToEditing = { id -> navController.navigate(Editing(id = id)) },
-                navigateToTicketLogs = { id -> navController.navigate(TicketLogs(id = id)) },
-            )
-        }
-        composable<Editing> {
-            TicketEditingRoute(
-                navigateToBack = { navController.popBackStack() }
-            )
-        }
-        composable<TicketLogs> {
-            TicketLogsRoute(
-                navigateToBack = { navController.navigateUp() }
-            )
-        }
+fun NavController.navigateToTicketCreation() {
+    navigate(CreateTicketDestination)
+}
+
+@Serializable
+object TicketListDestination
+
+fun NavGraphBuilder.ticketListScreen(
+    navigateToDetails: (Int) -> Unit
+) {
+    composable<TicketListDestination> {
+        TicketListRoute(
+            navigateToDetails = navigateToDetails
+        )
     }
 }
 
-fun NavGraphBuilder.notificationsGraph(navController: NavHostController) {
-    navigation<NotificationsGraph>(startDestination = Notifications) {
-        composable<Notifications> { }
+fun NavController.navigateToTicketListScreen() {
+    navigate(TicketListDestination) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 
-fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
-    navigation<SettingsGraph>(startDestination = Settings) {
-        composable<Settings> { }
+@Serializable
+data object SettingsDestination
+
+fun NavGraphBuilder.settingsScreen() {
+    composable<SettingsDestination> { }
+}
+
+fun NavController.navigateToSettings() {
+    navigate(SettingsDestination) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }

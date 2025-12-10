@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.Details
+import com.vertonepa.tracklet.navigation.graphs.details_graph.DetailsDestination
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.usecases.DeleteTicketByIdUseCase
 import com.vertonepa.tracklet.tickets.domain.usecases.GetTicketDetailsUseCase
@@ -27,7 +27,7 @@ class DetailsViewModel @Inject constructor(
 
     private var detailsJob: Job? = null
 
-    private val detailsRoute: Details = savedStateHandle.toRoute()
+    private val detailsRoute: DetailsDestination = savedStateHandle.toRoute()
     private val ticketDetailsId = savedStateHandle.getStateFlow(
         key = "ticketIdKey",
         initialValue = detailsRoute.id
@@ -46,7 +46,7 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    fun onClickDelete(id: String) {
+    fun onClickDelete(id: Int) {
         viewModelScope.launch {
             deleteTicketByIdUseCase(ticketId = id)
             onDelete()

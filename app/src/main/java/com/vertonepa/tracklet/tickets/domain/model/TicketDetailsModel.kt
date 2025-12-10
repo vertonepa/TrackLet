@@ -4,10 +4,10 @@ import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketDetailsLocal
 import java.time.LocalDate
 
 data class TicketDetailsModel(
-    val ticketId: String,
+    val ticketId: Int,
     val ticketHeading: String,
     val ticketDescription: String,
-    val paymentStatus: String,
+    val paymentState: String,
     val ticketTaskProgress: String,
     val ticketPublishDate: LocalDate
 )
@@ -17,7 +17,7 @@ fun TicketDetailsModel.toDetailsLocal(): TicketDetailsLocal {
         ticketId = this.ticketId,
         ticketHeading = this.ticketHeading,
         ticketDescription = this.ticketDescription,
-        paymentStatus = this.paymentStatus,
+        paymentState = this.paymentState,
         ticketTaskProgress = this.ticketTaskProgress,
         ticketPublishDate = this.ticketPublishDate,
     )

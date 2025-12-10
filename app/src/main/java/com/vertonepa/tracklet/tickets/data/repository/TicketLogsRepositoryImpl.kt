@@ -9,21 +9,21 @@ import com.vertonepa.tracklet.tickets.domain.model.Totals
 import com.vertonepa.tracklet.tickets.domain.repository.TicketLogsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.UUID
 import javax.inject.Inject
 
-class OfflineFirstTicketLogsRepository @Inject constructor(
+class TicketLogsRepositoryImpl @Inject constructor(
     private val ticketLogsDao: TicketLogsDao
 ) : TicketLogsRepository {
     override suspend fun generateLog(ticketLog: TicketLog) {
         ticketLogsDao.insertTicketLog(ticketLog.toEntity())
     }
 
-    override fun getLogs(id: UUID): Flow<List<TicketLog>> {
-        return ticketLogsDao.getTicketLogsById(id).map { ticketLogs -> ticketLogs.map { it.toDomain() } }
+    override fun getLogs(id: Int): Flow<List<TicketLog>> {
+        return ticketLogsDao.getTicketLogsById(id)
+            .map { ticketLogs -> ticketLogs.map { it.toDomain() } }
     }
 
-    override fun getTotals(id: UUID): Flow<Totals> {
+    override fun getTotals(id: Int): Flow<Totals> {
         Log.d("TOTALS", "revisar id del Totals si falla")
         return ticketLogsDao.getTotals(id).map { it.toDomain() }
     }

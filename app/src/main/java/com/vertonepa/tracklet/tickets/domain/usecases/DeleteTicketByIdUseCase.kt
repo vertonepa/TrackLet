@@ -1,10 +1,10 @@
 package com.vertonepa.tracklet.tickets.domain.usecases
 
-import com.vertonepa.tracklet.tickets.domain.repository.ITicketsRepository
+import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
 import javax.inject.Inject
 
-class DeleteTicketByIdUseCase @Inject constructor(private val repository: ITicketsRepository) {
-    suspend operator fun invoke(ticketId: String) {
+class DeleteTicketByIdUseCase @Inject constructor(private val repository: TicketsRepository) {
+    suspend operator fun invoke(ticketId: Int) {
         repository.deleteTicketById(ticketId)
     }
 }

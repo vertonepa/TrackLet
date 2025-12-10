@@ -1,24 +1,24 @@
 package com.vertonepa.tracklet.tickets.data.repository
 
 import com.vertonepa.tracklet.tickets.data.local.dao.TicketsDao
-import com.vertonepa.tracklet.tickets.data.local.entity.dto.toTicketDetailsModel
-import com.vertonepa.tracklet.tickets.data.local.entity.dto.toTicketListModel
+import com.vertonepa.tracklet.tickets.data.mappers.toTicketDetailsModel
+import com.vertonepa.tracklet.tickets.data.mappers.toTicketListModel
+import com.vertonepa.tracklet.tickets.data.mappers.toTicketsEntity
 import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
-import com.vertonepa.tracklet.tickets.domain.model.toTicketsEntity
-import com.vertonepa.tracklet.tickets.domain.repository.ITicketsRepository
+import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : ITicketsRepository {
-    override fun getTicketsFromLocal(): Flow<List<TicketListModel>> {
+class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : TicketsRepository {
+    override fun getTickets(): Flow<List<TicketListModel>> {
         return dao.getTicketList()
             .map { tickets -> tickets.map { item -> item.toTicketListModel() } }
     }
 
-    override fun getTicketDetailsFromLocalById(ticketId: String): Flow<TicketDetailsModel> {
+    override fun getTicketDetailsById(ticketId: Int): Flow<TicketDetailsModel> {
         return dao.getTicketDetails(ticketId).map { it.toTicketDetailsModel() }
     }
 
@@ -27,12 +27,12 @@ class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : I
         return dao.insertNewTicket(newTicket.toTicketsEntity())
     }
 
-    override suspend fun updateTicketInfo(id: String, heading: String?, description: String?) {
+    override suspend fun updateTicketInfo(id: Int, heading: String?, description: String?) {
         heading?.let { dao.updateTicketHeading(id, it) }
         description?.let { dao.updateTicketDescription(id, it) }
     }
 
-    override suspend fun updateTicketProgress(id: String, taskProgress: String) {
+    override suspend fun updateTicketProgress(id: Int, taskProgress: String) {
         /*
         se actualiza automaticamente mediante una acción del sistema
         estas acciones son:
@@ -44,7 +44,7 @@ class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : I
         dao.updateTicketProgress(id, taskProgress)
     }
 
-    override suspend fun deleteTicketById(id: String) {
+    override suspend fun deleteTicketById(id: Int) {
         dao.deleteTicket(id)
     }
 }

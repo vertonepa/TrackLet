@@ -7,7 +7,7 @@ import com.vertonepa.tracklet.tickets.data.local.dao.TicketLogsDao
 import com.vertonepa.tracklet.tickets.data.local.dao.TicketsDao
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketLogsEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
-import com.vertonepa.tracklet.tickets.data.local.util.Converter
+import com.vertonepa.tracklet.tickets.data.local.typeconverter.Converter
 
 
 @Database(
