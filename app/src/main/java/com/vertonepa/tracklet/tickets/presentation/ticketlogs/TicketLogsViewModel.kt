@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.graphs.details_graph.TicketLogs
+import com.vertonepa.tracklet.navigation.graphs.details_graph.TicketLogsDestination
 import com.vertonepa.tracklet.tickets.domain.model.TicketLog
 import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import com.vertonepa.tracklet.tickets.domain.repository.TicketLogsRepository
@@ -30,7 +30,7 @@ class TicketLogsViewModel @Inject constructor(
     var isMultiSelectionEnabled by mutableStateOf(false)
         private set
 
-    private val ticketLogsRoute: TicketLogs = savedStateHandle.toRoute()
+    private val ticketLogsRoute: TicketLogsDestination = savedStateHandle.toRoute()
     private val _ticketId = savedStateHandle.getStateFlow(
         key = "ticketIdKey",
         initialValue = ticketLogsRoute.id

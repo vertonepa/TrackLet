@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class OfflineFirstTicketLogsRepository @Inject constructor(
+class TicketLogsRepositoryImpl @Inject constructor(
     private val ticketLogsDao: TicketLogsDao
 ) : TicketLogsRepository {
     override suspend fun generateLog(ticketLog: TicketLog) {

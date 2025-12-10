@@ -7,7 +7,7 @@ import com.vertonepa.tracklet.navigation.graphs.details_graph.detailsScreen
 import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToDetailsScreen
 import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToEditingScreen
 import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToTicketLogsScreen
-import com.vertonepa.tracklet.navigation.graphs.main_graph.MainGraph
+import com.vertonepa.tracklet.navigation.graphs.main_graph.MainDestinationGraph
 import com.vertonepa.tracklet.navigation.graphs.main_graph.mainScreen
 import com.vertonepa.tracklet.navigation.graphs.main_graph.navigateToMainScreen
 
@@ -16,7 +16,7 @@ fun AppNavigationRoot() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = MainGraph
+        startDestination = MainDestinationGraph
     ) {
         mainScreen(
             backToMain = { navController.navigateToMainScreen() },

@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.tickets.presentation.editing
+package com.vertonepa.tracklet.tickets.presentation.edit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,19 +29,19 @@ import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import java.time.LocalDate
 
 @Composable
-fun TicketEditingRoute(
-    viewModel: EditingViewModel = hiltViewModel(),
-    navigateToBack: () -> Unit
+fun EditTicketRoute(
+    viewModel: EditTicketViewModel = hiltViewModel(),
+    navigateUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val headingState = viewModel.heading
     val descriptionState = viewModel.description
 
-    TicketEditingScreen(
+    EditTicketScreen(
         uiState = uiState,
         headingState = headingState,
         descriptionState = descriptionState,
-        navigateToBack = { navigateToBack() },
+        navigateUp = { navigateUp() },
         onHeadingChanged = { viewModel.onHeadingChanged(it) },
         onDescriptionChanged = { viewModel.onDescriptionChanged(it) },
         updateTicket = { heading, description ->
@@ -53,11 +53,11 @@ fun TicketEditingRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TicketEditingScreen(
+fun EditTicketScreen(
     uiState: EditingUIState,
     headingState: String,
     descriptionState: String,
-    navigateToBack: () -> Unit,
+    navigateUp: () -> Unit,
     onHeadingChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     updateTicket: (String, String) -> Unit,
@@ -72,7 +72,7 @@ fun TicketEditingScreen(
                 TopAppBar(
                     title = { Text("Editar") },
                     navigationIcon = {
-                        IconButton(onClick = { navigateToBack() }) {
+                        IconButton(onClick = { navigateUp() }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = null
@@ -82,7 +82,7 @@ fun TicketEditingScreen(
                     actions = {
                         Button(onClick = {
                             updateTicket(headingState, descriptionState)
-                            navigateToBack()
+                            navigateUp()
                         }) {
                             Text("Aceptar")
                         }
@@ -126,7 +126,7 @@ private fun LoadingDetailsScreen() {
 @Preview
 @Composable
 private fun Preview() {
-    TicketEditingScreen(
+    EditTicketScreen(
         uiState = EditingUIState.Success(
             ticketDetails = TicketDetailsModel(
                 ticketId = 0,
@@ -137,7 +137,7 @@ private fun Preview() {
                 ticketPublishDate = LocalDate.now()
             )
         ),
-        navigateToBack = {},
+        navigateUp = {},
         onHeadingChanged = {},
         onDescriptionChanged = {},
         headingState = "",

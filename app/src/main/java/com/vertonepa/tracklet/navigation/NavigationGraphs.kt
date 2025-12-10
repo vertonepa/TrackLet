@@ -1,5 +1,7 @@
 package com.vertonepa.tracklet.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -8,27 +10,40 @@ import com.vertonepa.tracklet.tickets.presentation.ticket_list.TicketListRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-object TicketCreation
+object CreateTicketDestination
 
 fun NavGraphBuilder.creationScreen(
     backToMain: () -> Unit
 ) {
-    composable<TicketCreation> {
+    composable<CreateTicketDestination>(
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(700)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(700)
+            )
+        }
+    ) {
         TicketCreationRoute(backToMain = backToMain)
     }
 }
 
 fun NavController.navigateToTicketCreation() {
-    navigate(TicketCreation)
+    navigate(CreateTicketDestination)
 }
 
 @Serializable
-object Tickets
+object TicketListDestination
 
 fun NavGraphBuilder.ticketListScreen(
     navigateToDetails: (Int) -> Unit
 ) {
-    composable<Tickets> {
+    composable<TicketListDestination> {
         TicketListRoute(
             navigateToDetails = navigateToDetails
         )
@@ -36,20 +51,28 @@ fun NavGraphBuilder.ticketListScreen(
 }
 
 fun NavController.navigateToTicketListScreen() {
-    navigate(Tickets) {
+    navigate(TicketListDestination) {
         popUpTo(graph.id) {
-            inclusive = true
+            saveState = true
         }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 
 @Serializable
-data object Settings
+data object SettingsDestination
 
 fun NavGraphBuilder.settingsScreen() {
-    composable<Settings> { }
+    composable<SettingsDestination> { }
 }
 
 fun NavController.navigateToSettings() {
-    navigate(Settings)
+    navigate(SettingsDestination) {
+        popUpTo(graph.id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }

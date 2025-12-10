@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.tickets.presentation.editing
+package com.vertonepa.tracklet.tickets.presentation.edit
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.graphs.details_graph.Editing
+import com.vertonepa.tracklet.navigation.graphs.details_graph.EditTicketDestination
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.usecases.GetTicketDetailsUseCase
 import com.vertonepa.tracklet.tickets.domain.usecases.UpdateTicketInfoUseCase
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditingViewModel @Inject constructor(
+class EditTicketViewModel @Inject constructor(
     private val updateTicketInfoUseCase: UpdateTicketInfoUseCase,
     private val getTicketDetailsUseCase: GetTicketDetailsUseCase,
     savedStateHandle: SavedStateHandle
@@ -33,10 +33,10 @@ class EditingViewModel @Inject constructor(
     var description by mutableStateOf("")
         private set
 
-    private val editingRoute: Editing = savedStateHandle.toRoute()
+    private val editTicketRoute: EditTicketDestination = savedStateHandle.toRoute()
     private val ticketId = savedStateHandle.getStateFlow(
         key = "ticketIdKey",
-        initialValue = editingRoute.id
+        initialValue = editTicketRoute.id
     ).value
 
     init {

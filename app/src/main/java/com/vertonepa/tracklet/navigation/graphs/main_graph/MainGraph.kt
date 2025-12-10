@@ -7,13 +7,13 @@ import com.vertonepa.tracklet.MainNavigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object MainGraph
+data object MainDestinationGraph
 
 fun NavGraphBuilder.mainScreen(
     backToMain: () -> Unit,
     navigateToDetailsScreen: (Int) -> Unit
 ) {
-    composable<MainGraph> {
+    composable<MainDestinationGraph> {
         MainNavigation(
             backToMain = backToMain,
             navigateToDetailsScreen = navigateToDetailsScreen
@@ -22,7 +22,7 @@ fun NavGraphBuilder.mainScreen(
 }
 
 fun NavController.navigateToMainScreen() {
-    navigate(MainGraph) {
+    navigate(MainDestinationGraph) {
         popUpTo(0) {
             inclusive = true
         }
