@@ -44,14 +44,6 @@ android {
 }
 
 dependencies {
-    //CameraX
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view)
-
-    //Coil Image Loading
-    implementation(libs.coil)
-
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     //Hilt
@@ -67,13 +59,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-
-    //Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
-    //WorkManager
-    implementation(libs.androidx.work.runtime.ktx)
 
     //LeakCanary
     debugImplementation(libs.leakcanary.android)
@@ -97,8 +82,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    //work-testing
-    androidTestImplementation(libs.androidx.work.testing)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

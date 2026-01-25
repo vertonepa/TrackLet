@@ -1,7 +1,5 @@
 [versions]
 agp = "8.12.0"
-cameraX = "1.4.2"
-coil = "3.0.4"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -15,13 +13,9 @@ kspVersion = "2.0.21-1.0.28"
 navigationCompose = "2.9.2"
 mockk = "1.14.5"
 kotlinxSerializationJsonJvm = "1.7.3"
-converterGson = "2.11.0"
-retrofit = "2.11.0"
 roomRuntime = "2.7.2"
 turbine = "1.2.0"
 desugar_jdk_libs = "2.1.5"
-workRuntimeKtx = "2.8.1"
-workTesting = "2.8.1"
 hiltAndroid = "2.56"
 hiltNavigationCompose = "1.2.0"
 
@@ -40,12 +34,6 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-#camera-x
-androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraX" }
-androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraX" }
-androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
-#coil
-coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 #desugar
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 #hilt
@@ -58,12 +46,6 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
-#retrofit
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
-#workmanager
-androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
-androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "workTesting" }
 #kotlinx-serialization
 kotlinx-serialization-json-jvm = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm", version.ref = "kotlinxSerializationJsonJvm" }
 #LeakCanary
