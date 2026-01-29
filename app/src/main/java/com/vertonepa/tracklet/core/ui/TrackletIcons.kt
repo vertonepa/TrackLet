@@ -1,0 +1,19 @@
+package com.vertonepa.tracklet.core.ui
+
+import androidx.annotation.DrawableRes
+import com.vertonepa.tracklet.R
+
+object TrackletIcons {
+    @DrawableRes val ResumeNotif = R.drawable.ic_resume_notif
+    @DrawableRes val PauseNotif = R.drawable.ic_pause_notif
+    @DrawableRes val StopNotif = R.drawable.ic_stop_notif
+
+    @DrawableRes val Start = R.drawable.ic_start
+    @DrawableRes val Resume = R.drawable.ic_resume
+    @DrawableRes val Pause = R.drawable.ic_pause
+    @DrawableRes val Stop = R.drawable.ic_stop
+    @DrawableRes val Cancel = R.drawable.ic_cancel
+
+    @DrawableRes val Close = R.drawable.ic_close
+    @DrawableRes val Back = R.drawable.ic_back
+}

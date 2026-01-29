@@ -12,6 +12,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 object CreateTicketDestination
 
+@Serializable
+object TicketListDestination
+
+@Serializable
+data object SettingsDestination
+
 fun NavGraphBuilder.creationScreen(
     backToMain: () -> Unit
 ) {
@@ -37,8 +43,7 @@ fun NavController.navigateToTicketCreation() {
     navigate(CreateTicketDestination)
 }
 
-@Serializable
-object TicketListDestination
+
 
 fun NavGraphBuilder.ticketListScreen(
     navigateToDetails: (Int) -> Unit
@@ -60,8 +65,7 @@ fun NavController.navigateToTicketListScreen() {
     }
 }
 
-@Serializable
-data object SettingsDestination
+
 
 fun NavGraphBuilder.settingsScreen() {
     composable<SettingsDestination> { }

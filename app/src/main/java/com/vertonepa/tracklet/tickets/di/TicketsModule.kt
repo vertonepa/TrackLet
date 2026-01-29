@@ -18,4 +18,9 @@ object TicketsModule {
     @Provides
     fun provideTicketLogsDao(db: AppDatabase) = db.ticketLogsDao()
 
+    @Singleton
+    @Provides
+    fun provideTimecounterDao(db: AppDatabase) = db.timecounterDao()
+
+
 }

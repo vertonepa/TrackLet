@@ -1,12 +1,13 @@
-package com.vertonepa.tracklet.tickets.data.local.typeconverter
+package com.vertonepa.tracklet.core.database
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.vertonepa.tracklet.core.datatypes.LogEntry
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @ProvidedTypeConverter
-class Converter {
+class TrackletConverter {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     @TypeConverter
@@ -17,5 +18,15 @@ class Converter {
     @TypeConverter
     fun toLocalDate(date: String): LocalDate {
         return LocalDate.parse(date, formatter)
+    }
+
+    @TypeConverter
+    fun toInt(logEntry: LogEntry): Int {
+        return logEntry.ordinal
+    }
+
+    @TypeConverter
+    fun toLogEntry(ordinal: Int): LogEntry {
+        return LogEntry.entries[ordinal]
     }
 }

@@ -5,10 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
-@Entity(tableName = "tickets_table")
+@Entity
 data class TicketsEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "ticket_id") val ticketId: Int,
+    @ColumnInfo(name = "ticket_id") val ticketId: Int = 0,
     @ColumnInfo(name = "ticket_heading") val ticketHeading: String,
     @ColumnInfo(name = "ticket_description") val ticketDescription: String,
     @ColumnInfo(name = "ticket_publish_date") val ticketPublishDate: LocalDate,

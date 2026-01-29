@@ -1,23 +1,31 @@
-package com.vertonepa.tracklet
+package com.vertonepa.tracklet.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.vertonepa.tracklet.navigation.graphs.details_graph.detailsScreen
-import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToDetailsScreen
-import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToEditingScreen
-import com.vertonepa.tracklet.navigation.graphs.details_graph.navigateToTicketLogsScreen
-import com.vertonepa.tracklet.navigation.graphs.main_graph.MainDestinationGraph
-import com.vertonepa.tracklet.navigation.graphs.main_graph.mainScreen
-import com.vertonepa.tracklet.navigation.graphs.main_graph.navigateToMainScreen
+import com.vertonepa.tracklet.navigation.graphs.TimecounterDestination
+import com.vertonepa.tracklet.navigation.graphs.detailsScreen
+import com.vertonepa.tracklet.navigation.graphs.mainScreen
+import com.vertonepa.tracklet.navigation.graphs.navigateToDetailsScreen
+import com.vertonepa.tracklet.navigation.graphs.navigateToEditingScreen
+import com.vertonepa.tracklet.navigation.graphs.navigateToMainScreen
+import com.vertonepa.tracklet.navigation.graphs.navigateToTicketLogsScreen
+import com.vertonepa.tracklet.timecounter.presentation.TimecounterRoute
 
 @Composable
 fun AppNavigationRoot() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = MainDestinationGraph
+        startDestination = TimecounterDestination
     ) {
+
+        //provisional
+        composable<TimecounterDestination> {
+            TimecounterRoute()
+        }
+
         mainScreen(
             backToMain = { navController.navigateToMainScreen() },
             navigateToDetailsScreen = { navController.navigateToDetailsScreen(it) }

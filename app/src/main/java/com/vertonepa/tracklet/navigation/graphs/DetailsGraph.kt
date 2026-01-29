@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.navigation.graphs.details_graph
+package com.vertonepa.tracklet.navigation.graphs
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -17,6 +17,9 @@ data class EditTicketDestination(val id: Int)
 @Serializable
 data class TicketLogsDestination(val id: Int)
 
+@Serializable
+data object TimecounterDestination
+
 fun NavGraphBuilder.detailsScreen(
     navigateToEditing: (Int) -> Unit,
     navigateToTicketLogs: (Int) -> Unit,
@@ -34,6 +37,9 @@ fun NavGraphBuilder.detailsScreen(
             navigateUp = navigateUp
         )
     }
+//    composable<TimecounterDestination> {
+//
+//    }
     composable<TicketLogsDestination> {
         TicketLogsRoute(
             navigateUp = navigateUp
@@ -52,3 +58,7 @@ fun NavController.navigateToEditingScreen(id: Int) {
 fun NavController.navigateToTicketLogsScreen(id: Int) {
     navigate(TicketLogsDestination(id))
 }
+
+//fun NavController.navigateToTimecounterScreen() {
+//    navigate(TimecounterDestination)
+//}

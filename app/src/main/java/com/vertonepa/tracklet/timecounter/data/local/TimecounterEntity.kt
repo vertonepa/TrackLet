@@ -1,11 +1,12 @@
-package com.vertonepa.tracklet.tickets.data.local.entity
+package com.vertonepa.tracklet.timecounter.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.time.LocalDate
+import com.vertonepa.tracklet.core.datatypes.LogEntry
+import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
 
 @Entity(
     foreignKeys = [
@@ -18,13 +19,12 @@ import java.time.LocalDate
     ],
     indices = [Index(value = ["ticket_id"])]
 )
-data class TicketLogsEntity(
+data class TimecounterEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "log_id") val logId: Int = 0,
+    @ColumnInfo(name = "tc_id") val tcId: Int = 0,
     @ColumnInfo(name = "ticket_id") val ticketId: Int,
-    @ColumnInfo(name = "payment_state") val paymentState: String,
-    val date: LocalDate,
-    val quantity: Int,
-    val color: String,
-    @ColumnInfo(name = "has_mark") val hasMark: Boolean
+    @ColumnInfo(name = "time_logged") val timeLogged: Long,
+    @ColumnInfo(name = "is_active") val isActive: Boolean,
+    @ColumnInfo(name = "log_entry") val logEntry: LogEntry,
+    @ColumnInfo(name = "created_at") val createdAt: Long
 )
