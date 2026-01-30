@@ -1,11 +1,11 @@
 package com.vertonepa.tracklet.timecounter.data
 
 import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterUnit
-import com.vertonepa.tracklet.timecounter.presentation.Timecounter
-import com.vertonepa.tracklet.timecounter.presentation.TimecounterGenerator
+import com.vertonepa.tracklet.timecounter.data.local.LoggedTimecounter
+import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterGenerator
 
-fun TimecounterUnit.toTimecounter(): Timecounter {
+fun LoggedTimecounter.toTimecounter(): Timecounter {
     return Timecounter(
         tcId = tcId,
         ticketId = ticketId,
@@ -14,8 +14,8 @@ fun TimecounterUnit.toTimecounter(): Timecounter {
     )
 }
 
-fun Timecounter.toTimecounterUnit(): TimecounterUnit {
-    return TimecounterUnit(
+fun Timecounter.toTimecounterUnit(): LoggedTimecounter {
+    return LoggedTimecounter(
         tcId = tcId,
         ticketId = ticketId,
         timeLogged = timeLogged,

@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation
+package com.vertonepa.tracklet.timecounter.presentation.model
 
 data class Timecounter(
     val tcId: Int,

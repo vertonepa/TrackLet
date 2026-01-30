@@ -1,7 +1,6 @@
 package com.vertonepa.tracklet.timecounter.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface TimecounterDao {
 
     @Query("SELECT tc_id, ticket_id, time_logged, is_active FROM TimecounterEntity WHERE tc_id = :tcId")
-    fun getTimecounter(tcId: Int): Flow<TimecounterUnit>
+    fun getTimecounter(tcId: Int): Flow<LoggedTimecounter>
 
     @Query("UPDATE TimecounterEntity SET is_active = :isActive WHERE tc_id = :tcId")
     suspend fun updateIsActive(tcId: Int, isActive: Boolean)

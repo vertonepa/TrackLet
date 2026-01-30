@@ -1,8 +1,8 @@
 package com.vertonepa.tracklet.timecounter.data
 
 import com.vertonepa.tracklet.timecounter.data.local.TimecounterDao
-import com.vertonepa.tracklet.timecounter.presentation.Timecounter
-import com.vertonepa.tracklet.timecounter.presentation.TimecounterGenerator
+import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterGenerator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

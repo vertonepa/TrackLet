@@ -58,9 +58,10 @@ object TCServiceHelper {
         return PendingIntent.getService(context, CANCEL_CODE, intent, FLAG)
     }
 
-    fun triggerService(context: Context, action: String) {
+    fun triggerService(context: Context, action: String, ticketId: Int? = null) {
         Intent(context, TimecounterService::class.java).apply {
             this.action = action
+            ticketId?.let { putExtra(TimecounterValues.TICKET_ID_EXTRA, it) }
             context.startService(this)
         }
     }
