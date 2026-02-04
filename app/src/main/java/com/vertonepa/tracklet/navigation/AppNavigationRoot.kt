@@ -2,29 +2,23 @@ package com.vertonepa.tracklet.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.vertonepa.tracklet.navigation.graphs.TimecounterDestination
+import com.vertonepa.tracklet.navigation.graphs.MainDestinationGraph
 import com.vertonepa.tracklet.navigation.graphs.detailsScreen
 import com.vertonepa.tracklet.navigation.graphs.mainScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToDetailsScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToEditingScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToMainScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToTicketLogsScreen
-import com.vertonepa.tracklet.timecounter.presentation.TimecounterRoute
+import com.vertonepa.tracklet.navigation.graphs.navigateToTimecounterScreen
 
 @Composable
 fun AppNavigationRoot() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = TimecounterDestination
+        startDestination = MainDestinationGraph
     ) {
-
-        //provisional
-        composable<TimecounterDestination> {
-            TimecounterRoute()
-        }
 
         mainScreen(
             backToMain = { navController.navigateToMainScreen() },
@@ -40,6 +34,9 @@ fun AppNavigationRoot() {
             },
             navigateUp = {
                 navController.navigateUp()
+            },
+            navigateToTimecounter = {
+                navController.navigateToTimecounterScreen(it)
             }
         )
 

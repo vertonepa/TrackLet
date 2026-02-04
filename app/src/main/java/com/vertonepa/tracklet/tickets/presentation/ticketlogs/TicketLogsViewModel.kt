@@ -33,7 +33,7 @@ class TicketLogsViewModel @Inject constructor(
     private val ticketLogsRoute: TicketLogsDestination = savedStateHandle.toRoute()
     private val _ticketId = savedStateHandle.getStateFlow(
         key = "ticketIdKey",
-        initialValue = ticketLogsRoute.id
+        initialValue = ticketLogsRoute.ticketId
     ).value
     val ticketId: Int = _ticketId
 

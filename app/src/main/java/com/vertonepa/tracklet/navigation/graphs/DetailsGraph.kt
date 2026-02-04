@@ -6,59 +6,60 @@ import androidx.navigation.compose.composable
 import com.vertonepa.tracklet.tickets.presentation.details.TicketDetailsRoute
 import com.vertonepa.tracklet.tickets.presentation.edit.EditTicketRoute
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.TicketLogsRoute
+import com.vertonepa.tracklet.timecounter.presentation.TimecounterRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DetailsDestination(val id: Int)
+data class DetailsDestination(val ticketId: Int)
 
 @Serializable
-data class EditTicketDestination(val id: Int)
+data class EditTicketDestination(val ticketId: Int)
 
 @Serializable
-data class TicketLogsDestination(val id: Int)
+data class TicketLogsDestination(val ticketId: Int)
 
 @Serializable
-data object TimecounterDestination
+data class TimecounterDestination(val timecounterId: Int)
 
 fun NavGraphBuilder.detailsScreen(
+    navigateUp: () -> Unit,
     navigateToEditing: (Int) -> Unit,
     navigateToTicketLogs: (Int) -> Unit,
-    navigateUp: () -> Unit
+    navigateToTimecounter: (Int) -> Unit
 ) {
     composable<DetailsDestination> {
         TicketDetailsRoute(
             navigateUp = navigateUp,
             navigateToEditing = navigateToEditing,
             navigateToTicketLogs = navigateToTicketLogs,
+            navigateToTimecounter = navigateToTimecounter
         )
     }
     composable<EditTicketDestination> {
-        EditTicketRoute(
-            navigateUp = navigateUp
-        )
+        EditTicketRoute(navigateUp = navigateUp)
     }
-//    composable<TimecounterDestination> {
-//
-//    }
+
+    composable<TimecounterDestination> {
+        TimecounterRoute(navigateUp = navigateUp)
+    }
+
     composable<TicketLogsDestination> {
-        TicketLogsRoute(
-            navigateUp = navigateUp
-        )
+        TicketLogsRoute(navigateUp = navigateUp)
     }
 }
 
-fun NavController.navigateToDetailsScreen(id: Int) {
-    navigate(DetailsDestination(id))
+fun NavController.navigateToDetailsScreen(ticketId: Int) {
+    navigate(DetailsDestination(ticketId))
 }
 
-fun NavController.navigateToEditingScreen(id: Int) {
-    navigate(EditTicketDestination(id))
+fun NavController.navigateToEditingScreen(ticketId: Int) {
+    navigate(EditTicketDestination(ticketId))
 }
 
-fun NavController.navigateToTicketLogsScreen(id: Int) {
-    navigate(TicketLogsDestination(id))
+fun NavController.navigateToTicketLogsScreen(ticketId: Int) {
+    navigate(TicketLogsDestination(ticketId))
 }
 
-//fun NavController.navigateToTimecounterScreen() {
-//    navigate(TimecounterDestination)
-//}
+fun NavController.navigateToTimecounterScreen(timecounterId: Int) {
+    navigate(TimecounterDestination(timecounterId))
+}

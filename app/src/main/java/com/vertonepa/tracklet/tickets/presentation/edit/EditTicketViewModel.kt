@@ -36,7 +36,7 @@ class EditTicketViewModel @Inject constructor(
     private val editTicketRoute: EditTicketDestination = savedStateHandle.toRoute()
     private val ticketId = savedStateHandle.getStateFlow(
         key = "ticketIdKey",
-        initialValue = editTicketRoute.id
+        initialValue = editTicketRoute.ticketId
     ).value
 
     init {

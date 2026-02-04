@@ -1,26 +1,21 @@
 package com.vertonepa.tracklet.timecounter.data.local
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TimecounterDao {
 
-    @Query("SELECT tc_id, ticket_id, time_logged, is_active FROM TimecounterEntity WHERE tc_id = :tcId")
-    fun getTimecounter(tcId: Int): Flow<LoggedTimecounter>
+    @Query("SELECT timecounter_id, time_logged, log_entry, created_at FROM TimecounterEntity WHERE timecounter_id = :timecounterId")
+    fun getTimecounter(timecounterId: Int): Flow<TimecounterLocal?>
 
-    @Query("UPDATE TimecounterEntity SET is_active = :isActive WHERE tc_id = :tcId")
-    suspend fun updateIsActive(tcId: Int, isActive: Boolean)
+    @Query("UPDATE TimecounterEntity SET is_active = :isActive WHERE timecounter_id = :timeCounterId")
+    suspend fun updateIsActive(timeCounterId: Int, isActive: Boolean)
 
-    @Query("UPDATE TimecounterEntity SET time_logged = :timeLogged WHERE tc_id = :tcId")
-    suspend fun updateTimeLogged(tcId: Int, timeLogged: Long)
+    @Query("UPDATE TimecounterEntity SET time_logged = :timeLogged WHERE timecounter_id = :timeCounterId")
+    suspend fun updateTimeElapsed(timeCounterId: Int, timeLogged: Long)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTimecounter(timecounter: TimecounterEntity)
-
-    @Query("DELETE FROM TimecounterEntity WHERE tc_id = :tcId AND ticket_id = :ticketId")
-    suspend fun deleteTimecounter(tcId: Int, ticketId: Int)
+    @Query("DELETE FROM TimecounterEntity WHERE timecounter_id = :timecounterId")
+    suspend fun deleteTimecounter(timecounterId: Int)
 }

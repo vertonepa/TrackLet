@@ -2,8 +2,7 @@ package com.vertonepa.tracklet.timecounter.presentation.utils
 
 abstract class TimecounterValues {
     companion object {
-        const val TC_STATE = "TC_STATE"
-        const val TICKET_ID_EXTRA = "TICKET_ID_EXTRA"
+        const val TIMECOUNTER_STATE = "TC_STATE"
 
         const val START = "START"
         const val PAUSE = "PAUSE"

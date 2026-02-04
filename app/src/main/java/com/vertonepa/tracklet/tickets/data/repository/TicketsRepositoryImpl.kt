@@ -8,11 +8,16 @@ import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
 import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
+import com.vertonepa.tracklet.timecounter.data.toEntity
+import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : TicketsRepository {
+class TicketsRepositoryImpl @Inject constructor(
+    private val dao: TicketsDao
+) : TicketsRepository {
+
     override fun getTickets(): Flow<List<TicketListModel>> {
         return dao.getTicketList()
             .map { tickets -> tickets.map { item -> item.toTicketListModel() } }
@@ -23,16 +28,15 @@ class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : T
     }
 
     override suspend fun createNewTicket(newTicket: TicketCreationModel): Long {
-        //si retorna -1L, informar a usuario por pantalla de que no se creó el ticket
         return dao.insertNewTicket(newTicket.toTicketsEntity())
     }
 
-    override suspend fun updateTicketInfo(id: Int, heading: String?, description: String?) {
-        heading?.let { dao.updateTicketHeading(id, it) }
-        description?.let { dao.updateTicketDescription(id, it) }
+    override suspend fun updateTicketInfo(ticketId: Int, heading: String?, description: String?) {
+        heading?.let { dao.updateTicketHeading(ticketId, it) }
+        description?.let { dao.updateTicketDescription(ticketId, it) }
     }
 
-    override suspend fun updateTicketProgress(id: Int, taskProgress: String) {
+    override suspend fun updateTicketProgress(ticketId: Int, taskProgress: String) {
         /*
         se actualiza automaticamente mediante una acción del sistema
         estas acciones son:
@@ -41,10 +45,22 @@ class TicketsRepositoryImpl @Inject constructor(private val dao: TicketsDao) : T
         - Cuando se presiona cancelar trabajo: TicketTaskProgressLabel.CANCELLED.status
         - Cuando se termina el Timer exitosamente: TicketTaskProgressLabel.COMPLETED.status
          */
-        dao.updateTicketProgress(id, taskProgress)
+        dao.updateTicketProgress(ticketId, taskProgress)
     }
 
-    override suspend fun deleteTicketById(id: Int) {
-        dao.deleteTicket(id)
+    override suspend fun deleteTicketById(ticketId: Int) {
+        dao.deleteTicket(ticketId)
+    }
+
+    override fun getCurrentActiveTimecounter(): Flow<Int?> {
+        return dao.getActiveTimecounter()
+    }
+
+    override suspend fun initNewTimecounter(timecounter: Timecounter) {
+        dao.insertTimecounter(timecounter.toEntity())
+    }
+
+    override fun getTimecounterId(timecounterId: Int): Flow<Int> {
+        return dao.getActiveTimecounterId(timecounterId)
     }
 }

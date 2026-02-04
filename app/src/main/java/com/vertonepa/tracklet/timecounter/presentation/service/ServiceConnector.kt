@@ -24,16 +24,18 @@ class ServiceConnector @Inject constructor(
     private val _service = MutableStateFlow<TimecounterService?>(null)
     val service = _service.asStateFlow()
 
+    private var currentId: Int? = null
+
     val time = _service.flatMapLatest { service ->
         service?.time ?: flowOf(Time())
     }
 
-    val timecounter = _service.flatMapLatest { service ->
-        service?.currentState ?: flowOf(TimecounterState.IDLE)
+    val timecounterState = _service.flatMapLatest { service ->
+        service?.currentState ?: flowOf(TimecounterState.NOT_INITIALIZED)
     }
 
-    val isActive = service.flatMapLatest {service ->
-        service?.isTimecounterActive ?: flowOf(false)
+    val timecounter = _service.flatMapLatest { service ->
+        service?.timecounter ?: flowOf(null)
     }
 
     private val connection = object : ServiceConnection {
@@ -42,6 +44,9 @@ class ServiceConnector @Inject constructor(
             binder: IBinder?
         ) {
             val binder = binder as TimecounterService.TimeCounterBinder
+            val boundService = binder.getService()
+            currentId?.let { boundService?.connectWithTimecounterById(it) }
+
             _service.value = binder.getService()
         }
 
@@ -58,5 +63,10 @@ class ServiceConnector @Inject constructor(
     fun unbind() {
         context.unbindService(connection)
         _service.value = null
+        currentId = null
+    }
+
+    fun connectWithTimecounterById(timecounterId: Int) {
+        currentId = timecounterId
     }
 }

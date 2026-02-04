@@ -21,7 +21,7 @@ import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
 )
 data class TimecounterEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "tc_id") val tcId: Int = 0,
+    @ColumnInfo(name = "timecounter_id") val timecounterId: Int = 0,
     @ColumnInfo(name = "ticket_id") val ticketId: Int,
     @ColumnInfo(name = "time_logged") val timeLogged: Long,
     @ColumnInfo(name = "is_active") val isActive: Boolean,

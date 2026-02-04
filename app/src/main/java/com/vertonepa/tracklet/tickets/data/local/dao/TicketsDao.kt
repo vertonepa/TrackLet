@@ -2,11 +2,11 @@ package com.vertonepa.tracklet.tickets.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketDetailsLocal
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketListLocal
+import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -29,7 +29,7 @@ interface TicketsDao {
     )
     fun getTicketDetails(id: Int): Flow<TicketDetailsLocal>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun insertNewTicket(ticket: TicketsEntity): Long
 
     @Query("UPDATE TicketsEntity SET ticket_heading = :heading WHERE ticket_id = :id")
@@ -47,4 +47,12 @@ interface TicketsDao {
     @Query("DELETE FROM TicketsEntity WHERE ticket_id = :id")
     suspend fun deleteTicket(id: Int): Int
 
+    @Query("SELECT ticket_id FROM TimecounterEntity WHERE is_active = 1 LIMIT 1")
+    fun getActiveTimecounter(): Flow<Int?>
+
+    @Query("SELECT timecounter_id FROM TimecounterEntity WHERE ticket_id = :ticketId AND is_active = 1")
+    fun getActiveTimecounterId(ticketId: Int): Flow<Int>
+
+    @Insert
+    suspend fun insertTimecounter(timecounter: TimecounterEntity)
 }

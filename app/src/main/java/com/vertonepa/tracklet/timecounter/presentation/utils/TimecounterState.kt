@@ -1,7 +1,7 @@
 package com.vertonepa.tracklet.timecounter.presentation.utils
 
 enum class TimecounterState {
-    IDLE,
+    NOT_INITIALIZED,
     PAUSED,
     RESUMED,
     STOPPED,

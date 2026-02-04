@@ -3,6 +3,7 @@ package com.vertonepa.tracklet.tickets.domain.repository
 import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
+import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
 import kotlinx.coroutines.flow.Flow
 
 interface TicketsRepository {
@@ -12,9 +13,15 @@ interface TicketsRepository {
 
     suspend fun createNewTicket(newTicket: TicketCreationModel): Long
 
-    suspend fun updateTicketInfo(id: Int, heading: String?, description: String?)
+    suspend fun updateTicketInfo(ticketId: Int, heading: String?, description: String?)
 
-    suspend fun updateTicketProgress(id: Int, taskProgress: String)
+    suspend fun updateTicketProgress(ticketId: Int, taskProgress: String)
 
-    suspend fun deleteTicketById(id: Int)
+    suspend fun deleteTicketById(ticketId: Int)
+
+    fun getCurrentActiveTimecounter(): Flow<Int?>
+
+    suspend fun initNewTimecounter(timecounter: Timecounter)
+
+    fun getTimecounterId(timecounterId: Int): Flow<Int>
 }
