@@ -85,8 +85,6 @@ class TimecounterService : Service() {
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setDefaults(0)
-            .addAction(TrackletIcons.StopNotif, TimecounterValues.STOP, TCServiceHelper.stop(this))
-            .setContentIntent(TCServiceHelper.clickNotification(this))
 
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     }
@@ -276,10 +274,11 @@ class TimecounterService : Service() {
 
     private fun changeNotificationButton(isPaused: Boolean) {
         notificationBuilder.clearActions()
+        notificationBuilder.setContentIntent(TCServiceHelper.clickNotification(this, timecounterId))
         notificationBuilder.addAction(
             TrackletIcons.StopNotif,
             TimecounterValues.STOP,
-            TCServiceHelper.stop(this)
+            TCServiceHelper.stop(this, timecounterId)
         )
         if (isPaused) {
             notificationBuilder.addAction(

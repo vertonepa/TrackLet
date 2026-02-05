@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +47,8 @@ import com.vertonepa.tracklet.timecounter.presentation.utils.formatToString
 @Composable
 fun TimecounterRoute(
     viewmodel: TimecounterViewmodel = hiltViewModel(),
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    shouldShowDialog: Boolean = false
 ) {
     val timeState = viewmodel.timeState.collectAsStateWithLifecycle()
     val timecounterState = viewmodel.timecounterState.collectAsStateWithLifecycle()
@@ -55,6 +58,7 @@ fun TimecounterRoute(
         time = timeState.value,
         timecounter = timecounterState.value,
         uiState = uiState.value,
+        shouldShowDialog = shouldShowDialog,
         navigateUp = navigateUp
     )
 }
@@ -64,11 +68,21 @@ fun TimecounterScreen(
     time: Time,
     timecounter: TimecounterState,
     uiState: TimecounterUiState,
+    shouldShowDialog: Boolean ,
     navigateUp: () -> Unit
 ) {
     val context = LocalContext.current
-    var showStopDialog by rememberSaveable { mutableStateOf(false) }
+    var showStopDialog by rememberSaveable { mutableStateOf(shouldShowDialog) }
     var showCancelDialog by rememberSaveable { mutableStateOf(false) }
+
+    if(!LocalInspectionMode.current) {
+        LaunchedEffect(shouldShowDialog) {
+            if (shouldShowDialog) {
+                TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                showStopDialog = true
+            }
+        }
+    }
 
     when (uiState) {
         is TimecounterUiState.Loading -> LoadingScreen()
@@ -202,6 +216,7 @@ private fun Preview() {
         time = Time(),
         timecounter = TimecounterState.NOT_INITIALIZED,
         uiState = TimecounterUiState.Success(TimecounterInfo(1, 0, LogEntry.TIMER, 0)),
-        navigateUp = {}
+        navigateUp = {},
+        shouldShowDialog = false
     )
 }
