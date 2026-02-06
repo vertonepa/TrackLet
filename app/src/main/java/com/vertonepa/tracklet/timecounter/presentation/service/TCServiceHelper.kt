@@ -7,7 +7,6 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.vertonepa.tracklet.MainActivity
 import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.DEEP_LINK_TIMECOUNTER
 import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.TIMECOUNTER_STATE
 
 object TCServiceHelper {
@@ -17,17 +16,26 @@ object TCServiceHelper {
     private const val RESUME_CODE = 2
     private const val STOP_CODE = 3
 
-    fun clickNotification(context: Context, timecounterId: Int): PendingIntent {
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            "$DEEP_LINK_TIMECOUNTER/$timecounterId?shouldShowDialog=false".toUri(),
-            context,
-            MainActivity::class.java
-        ).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
+    private fun createIntentWithRoute(route: String, context: Context): Intent = Intent(
+        Intent.ACTION_VIEW,
+        route.toUri(),
+        context,
+        MainActivity::class.java
+    )
 
-        return PendingIntent.getActivity(context, CLICK_CODE, intent, FLAG)
+    fun clickNotification(context: Context, ticketId: Int, timecounterId: Int): PendingIntent {
+        val listIntent = createIntentWithRoute("tracklet://tickets", context)
+        val detailsIntent = createIntentWithRoute("tracklet://tickets/details/$ticketId", context)
+        val timecounterIntent = createIntentWithRoute(
+            "tracklet://tickets/timecounter/$ticketId/$timecounterId?shouldShowDialog=false",
+            context
+        )
+
+        return TaskStackBuilder.create(context)
+            .addNextIntent(listIntent)
+            .addNextIntent(detailsIntent)
+            .addNextIntent(timecounterIntent)
+            .getPendingIntent(CLICK_CODE, FLAG)!!
     }
 
     fun pause(context: Context): PendingIntent {
@@ -44,17 +52,19 @@ object TCServiceHelper {
         return PendingIntent.getService(context, RESUME_CODE, intent, FLAG)
     }
 
-    fun stop(context: Context, timecounterId: Int): PendingIntent {
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            "$DEEP_LINK_TIMECOUNTER/$timecounterId?shouldShowDialog=true".toUri(),
-            context,
-            MainActivity::class.java
-        ).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
+    fun stop(context: Context, ticketId: Int, timecounterId: Int): PendingIntent {
+        val listIntent = createIntentWithRoute("tracklet://tickets", context)
+        val detailsIntent = createIntentWithRoute("tracklet://tickets/details/$ticketId", context)
+        val timecounterIntent = createIntentWithRoute(
+            "tracklet://tickets/timecounter/$ticketId/$timecounterId?shouldShowDialog=false",
+            context
+        )
 
-        return PendingIntent.getActivity(context, STOP_CODE, intent, FLAG)
+        return TaskStackBuilder.create(context)
+            .addNextIntent(listIntent)
+            .addNextIntent(detailsIntent)
+            .addNextIntent(timecounterIntent)
+            .getPendingIntent(STOP_CODE, FLAG)!!
     }
 
     fun triggerService(context: Context, action: String) {

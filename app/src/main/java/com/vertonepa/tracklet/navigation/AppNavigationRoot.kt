@@ -35,8 +35,8 @@ fun AppNavigationRoot() {
             navigateUp = {
                 navController.navigateUp()
             },
-            navigateToTimecounter = {
-                navController.navigateToTimecounterScreen(it)
+            navigateToTimecounter = { ticketId, timecounterId ->
+                navController.navigateToTimecounterScreen(ticketId, timecounterId)
             }
         )
 

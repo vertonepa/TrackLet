@@ -79,6 +79,8 @@ class TimecounterService : Service() {
         }
     }.stateIn(serviceScope, SharingStarted.Eagerly, null)
 
+    private val ticketId: Int get() = timecounter.value?.ticketId!!
+
 
     override fun onCreate() {
         super.onCreate()
@@ -277,12 +279,13 @@ class TimecounterService : Service() {
     }
 
     private fun changeNotificationButton(isPaused: Boolean) {
+        Log.d("TimecounterService", "private val ticketId: Int get() = $ticketId")
         notificationBuilder.clearActions()
-        notificationBuilder.setContentIntent(TCServiceHelper.clickNotification(this, timecounterId))
+        notificationBuilder.setContentIntent(TCServiceHelper.clickNotification(this, ticketId, timecounterId))
         notificationBuilder.addAction(
             TrackletIcons.StopNotif,
             TimecounterValues.STOP,
-            TCServiceHelper.stop(this, timecounterId)
+            TCServiceHelper.stop(this, ticketId, timecounterId)
         )
         if (isPaused) {
             notificationBuilder.addAction(

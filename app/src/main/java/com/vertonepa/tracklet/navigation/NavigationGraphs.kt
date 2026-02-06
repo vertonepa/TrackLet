@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.vertonepa.tracklet.tickets.presentation.creation.TicketCreationRoute
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.TicketListRoute
 import kotlinx.serialization.Serializable
@@ -48,7 +49,13 @@ fun NavController.navigateToTicketCreation() {
 fun NavGraphBuilder.ticketListScreen(
     navigateToDetails: (Int) -> Unit
 ) {
-    composable<TicketListDestination> {
+    composable<TicketListDestination>(
+        deepLinks = listOf(
+            navDeepLink<TicketListDestination>(
+                basePath = "tracklet://tickets"
+            )
+        )
+    ) {
         TicketListRoute(
             navigateToDetails = navigateToDetails
         )
