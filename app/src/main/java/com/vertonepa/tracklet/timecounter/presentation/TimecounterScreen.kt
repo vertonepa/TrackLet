@@ -103,12 +103,17 @@ fun TimecounterScreen(
                     horizontalArrangement = Arrangement.Absolute.SpaceAround
                 ) {
                     IconButton(modifier = Modifier.size(48.dp), onClick = {
-                        showStopDialog = true
-                        TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                        if (timecounterState != TimecounterState.NOT_INITIALIZED) {
+                            showStopDialog = true
+                            TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                        }
                     }) {
                         Icon(
                             modifier = Modifier.size(48.dp),
                             painter = painterResource(TrackletIcons.Stop),
+                            tint = if (timecounterState == TimecounterState.NOT_INITIALIZED) {
+                                Color(0x9A848484)
+                            } else LocalContentColor.current,
                             contentDescription = "stop button"
                         )
                     }
@@ -143,19 +148,24 @@ fun TimecounterScreen(
                                     painterResource(TrackletIcons.Resume)
                                 }
                             },
-                            contentDescription = "button change dynamically between Start, Resume and Pause"
+                            contentDescription = "button that change dynamically between Start, Resume and Pause"
                         )
                     }
                     IconButton(
                         modifier = Modifier.size(60.dp),
                         onClick = {
-                            TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
-                            showCancelDialog = true
+                            if (timecounterState != TimecounterState.NOT_INITIALIZED) {
+                                TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                                showCancelDialog = true
+                            }
                         }
                     ) {
                         Icon(
                             modifier = Modifier.size(48.dp),
                             painter = painterResource(TrackletIcons.Cancel),
+                            tint = if (timecounterState == TimecounterState.NOT_INITIALIZED) {
+                                Color(0x9A848484)
+                            } else LocalContentColor.current,
                             contentDescription = "cancel button"
                         )
                     }
