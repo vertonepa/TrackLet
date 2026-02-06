@@ -37,12 +37,12 @@ class TimecounterViewmodel @Inject constructor(
         initialValue = TimecounterState.NOT_INITIALIZED
     )
 
-    val uiState: StateFlow<TimecounterUiState> = connector.timecounter.map { counter ->
-        Log.d("TimecounterViewmodel", "timecounter recibido: $counter")
-        if (counter == null) {
+    val uiState: StateFlow<TimecounterUiState> = connector.timecounter.map { timecounterFromService ->
+        Log.d("TimecounterViewmodel", "timecounter recibido: $timecounterFromService")
+        if (timecounterFromService == null) {
             TimecounterUiState.Loading
         } else {
-            TimecounterUiState.Success(counter)
+            TimecounterUiState.Success(timecounterFromService)
         }
     }.stateIn(
         scope = viewModelScope,

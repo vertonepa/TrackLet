@@ -8,18 +8,8 @@ import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
 fun TimecounterLocal.toTimecounterInfo(): TimecounterInfo {
     return TimecounterInfo(
         timecounterId = timecounterId,
-        timeLogged = timeLogged,
-        logEntry = logEntry,
-        createdAt = createdAt
-    )
-}
-
-fun TimecounterInfo.toTimecounterLocal(): TimecounterLocal {
-    return TimecounterLocal(
-        timecounterId = timecounterId,
-        timeLogged = timeLogged,
-        logEntry = logEntry,
-        createdAt = createdAt
+        ticketId = ticketId,
+        timeLogged = timeLogged
     )
 }
 

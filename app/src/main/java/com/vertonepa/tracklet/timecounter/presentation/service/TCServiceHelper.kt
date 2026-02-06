@@ -1,12 +1,13 @@
 package com.vertonepa.tracklet.timecounter.presentation.service
 
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
+import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.vertonepa.tracklet.MainActivity
 import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues
+import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.DEEP_LINK_TIMECOUNTER
 import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.TIMECOUNTER_STATE
 
 object TCServiceHelper {
@@ -19,15 +20,14 @@ object TCServiceHelper {
     fun clickNotification(context: Context, timecounterId: Int): PendingIntent {
         val intent = Intent(
             Intent.ACTION_VIEW,
-            "tracklet://timecounter/$timecounterId?shouldShowDialog=false".toUri(),
+            "$DEEP_LINK_TIMECOUNTER/$timecounterId?shouldShowDialog=false".toUri(),
             context,
             MainActivity::class.java
-        )
-
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(CLICK_CODE, FLAG)
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
+
+        return PendingIntent.getActivity(context, CLICK_CODE, intent, FLAG)
     }
 
     fun pause(context: Context): PendingIntent {
@@ -47,15 +47,14 @@ object TCServiceHelper {
     fun stop(context: Context, timecounterId: Int): PendingIntent {
         val intent = Intent(
             Intent.ACTION_VIEW,
-            "tracklet://timecounter/$timecounterId?shouldShowDialog=true".toUri(),
+            "$DEEP_LINK_TIMECOUNTER/$timecounterId?shouldShowDialog=true".toUri(),
             context,
             MainActivity::class.java
-        )
-
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(STOP_CODE, FLAG)
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+
+        return PendingIntent.getActivity(context, STOP_CODE, intent, FLAG)
     }
 
     fun triggerService(context: Context, action: String) {

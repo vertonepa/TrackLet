@@ -4,12 +4,19 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.vertonepa.tracklet.navigation.TicketListDestination
+import com.vertonepa.tracklet.navigation.ticketListScreen
 import com.vertonepa.tracklet.tickets.presentation.details.TicketDetailsRoute
 import com.vertonepa.tracklet.tickets.presentation.edit.EditTicketRoute
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.TicketLogsRoute
 import com.vertonepa.tracklet.timecounter.presentation.TimecounterRoute
+import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.DEEP_LINK_TIMECOUNTER
 import kotlinx.serialization.Serializable
+
+@Serializable
+data object DetailsGraph
 
 @Serializable
 data class DetailsDestination(val ticketId: Int)
@@ -23,42 +30,47 @@ data class TicketLogsDestination(val ticketId: Int)
 @Serializable
 data class TimecounterDestination(val timecounterId: Int, val shouldShowDialog: Boolean = false)
 
-fun NavGraphBuilder.detailsScreen(
+fun NavGraphBuilder.detailsGraph(
     navigateUp: () -> Unit,
     navigateToEditing: (Int) -> Unit,
     navigateToTicketLogs: (Int) -> Unit,
     navigateToTimecounter: (Int) -> Unit
 ) {
-    composable<DetailsDestination> {
-        TicketDetailsRoute(
-            navigateUp = navigateUp,
-            navigateToEditing = navigateToEditing,
-            navigateToTicketLogs = navigateToTicketLogs,
-            navigateToTimecounter = navigateToTimecounter
-        )
-    }
-    composable<EditTicketDestination> {
-        EditTicketRoute(navigateUp = navigateUp)
-    }
+    navigation<DetailsGraph>(startDestination = TicketListDestination) {
+        ticketListScreen {
+            it
+        }
+        composable<DetailsDestination> {
+            TicketDetailsRoute(
+                navigateUp = navigateUp,
+                navigateToEditing = navigateToEditing,
+                navigateToTicketLogs = navigateToTicketLogs,
+                navigateToTimecounter = navigateToTimecounter
+            )
+        }
+        composable<EditTicketDestination> {
+            EditTicketRoute(navigateUp = navigateUp)
+        }
 
-    composable<TimecounterDestination>(
-        deepLinks = listOf(
-            navDeepLink<TimecounterDestination>(basePath = "tracklet://timecounter")
-        )
-    ) {
-        val timecounterArgs = it.toRoute<TimecounterDestination>()
-        TimecounterRoute(
-            navigateUp = navigateUp,
-            shouldShowDialog = timecounterArgs.shouldShowDialog
-        )
-    }
+        composable<TimecounterDestination>(
+            deepLinks = listOf(
+                navDeepLink<TimecounterDestination>(basePath = DEEP_LINK_TIMECOUNTER)
+            )
+        ) {
+            val args = it.toRoute<TimecounterDestination>()
+            TimecounterRoute(
+                navigateUp = navigateUp,
+                shouldShowDialog = args.shouldShowDialog
+            )
+        }
 
-    composable<TicketLogsDestination> {
-        TicketLogsRoute(navigateUp = navigateUp)
+        composable<TicketLogsDestination> {
+            TicketLogsRoute(navigateUp = navigateUp)
+        }
     }
 }
 
-fun NavController.navigateToDetailsScreen(ticketId: Int) {
+fun NavController.navigateToDetailsGraph(ticketId: Int) {
     navigate(DetailsDestination(ticketId))
 }
 

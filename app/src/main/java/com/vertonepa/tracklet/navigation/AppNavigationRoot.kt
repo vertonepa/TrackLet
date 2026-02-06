@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.vertonepa.tracklet.navigation.graphs.MainDestinationGraph
-import com.vertonepa.tracklet.navigation.graphs.detailsScreen
+import com.vertonepa.tracklet.navigation.graphs.detailsGraph
 import com.vertonepa.tracklet.navigation.graphs.mainScreen
-import com.vertonepa.tracklet.navigation.graphs.navigateToDetailsScreen
+import com.vertonepa.tracklet.navigation.graphs.navigateToDetailsGraph
 import com.vertonepa.tracklet.navigation.graphs.navigateToEditingScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToMainScreen
 import com.vertonepa.tracklet.navigation.graphs.navigateToTicketLogsScreen
@@ -22,10 +22,10 @@ fun AppNavigationRoot() {
 
         mainScreen(
             backToMain = { navController.navigateToMainScreen() },
-            navigateToDetailsScreen = { navController.navigateToDetailsScreen(it) }
+            navigateToDetailsScreen = { navController.navigateToDetailsGraph(it) }
         )
 
-        detailsScreen(
+        detailsGraph(
             navigateToEditing = {
                 navController.navigateToEditingScreen(it)
             },

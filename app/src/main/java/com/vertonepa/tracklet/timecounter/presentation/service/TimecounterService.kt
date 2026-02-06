@@ -8,6 +8,7 @@ import android.content.pm.ServiceInfo
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.vertonepa.tracklet.R
 import com.vertonepa.tracklet.core.ui.TrackletIcons
@@ -52,8 +53,10 @@ class TimecounterService : Service() {
     private val binder = TimeCounterBinder(this)
     private var lastTickTimestamp: Long = 0L
     private var counterJob: Job? = null
+
     private val _timecounterId = MutableStateFlow<Int?>(null)
     private val timecounterId: Int get() = _timecounterId.value ?: 0
+
     private val _time = MutableStateFlow(Time())
     val time = _time.asStateFlow()
 
@@ -65,6 +68,7 @@ class TimecounterService : Service() {
 
     private val _currentState = MutableStateFlow(TimecounterState.NOT_INITIALIZED)
     val currentState = _currentState.asStateFlow()
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val timecounter = _timecounterId.flatMapLatest { id ->

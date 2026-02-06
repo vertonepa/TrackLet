@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.vertonepa.tracklet.core.datatypes.LogEntry
 import com.vertonepa.tracklet.core.ui.TrackletDialog
 import com.vertonepa.tracklet.core.ui.TrackletIcons
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.LoadingScreen
@@ -56,7 +55,7 @@ fun TimecounterRoute(
 
     TimecounterScreen(
         time = timeState.value,
-        timecounter = timecounterState.value,
+        timecounterState = timecounterState.value,
         uiState = uiState.value,
         shouldShowDialog = shouldShowDialog,
         navigateUp = navigateUp
@@ -66,20 +65,19 @@ fun TimecounterRoute(
 @Composable
 fun TimecounterScreen(
     time: Time,
-    timecounter: TimecounterState,
+    timecounterState: TimecounterState,
     uiState: TimecounterUiState,
-    shouldShowDialog: Boolean ,
+    shouldShowDialog: Boolean,
     navigateUp: () -> Unit
 ) {
     val context = LocalContext.current
     var showStopDialog by rememberSaveable { mutableStateOf(shouldShowDialog) }
     var showCancelDialog by rememberSaveable { mutableStateOf(false) }
 
-    if(!LocalInspectionMode.current) {
+    if (!LocalInspectionMode.current) {
         LaunchedEffect(shouldShowDialog) {
             if (shouldShowDialog) {
                 TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
-                showStopDialog = true
             }
         }
     }
@@ -115,20 +113,20 @@ fun TimecounterScreen(
                         )
                     }
                     IconButton(modifier = Modifier.size(60.dp), onClick = {
-                        if (timecounter == TimecounterState.NOT_INITIALIZED) {
+                        if (timecounterState == TimecounterState.NOT_INITIALIZED) {
                             TCServiceHelper.triggerService(context, TimecounterValues.START)
                         }
-                        if (timecounter == TimecounterState.RESUMED) {
+                        if (timecounterState == TimecounterState.RESUMED) {
                             TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
                         }
-                        if (timecounter == TimecounterState.PAUSED) {
+                        if (timecounterState == TimecounterState.PAUSED) {
                             TCServiceHelper.triggerService(context, TimecounterValues.RESUME)
                         }
                     }) {
                         Icon(
                             modifier = Modifier.size(60.dp),
-                            tint = if (timecounter == TimecounterState.NOT_INITIALIZED) Color.Red else LocalContentColor.current,
-                            painter = when (timecounter) {
+                            tint = if (timecounterState == TimecounterState.NOT_INITIALIZED) Color.Red else LocalContentColor.current,
+                            painter = when (timecounterState) {
                                 TimecounterState.NOT_INITIALIZED -> painterResource(
                                     TrackletIcons.Start
                                 )
@@ -214,8 +212,8 @@ fun TimecounterScreen(
 private fun Preview() {
     TimecounterScreen(
         time = Time(),
-        timecounter = TimecounterState.NOT_INITIALIZED,
-        uiState = TimecounterUiState.Success(TimecounterInfo(1, 0, LogEntry.TIMER, 0)),
+        timecounterState = TimecounterState.NOT_INITIALIZED,
+        uiState = TimecounterUiState.Success(TimecounterInfo(7, 1, 0)),
         navigateUp = {},
         shouldShowDialog = false
     )
