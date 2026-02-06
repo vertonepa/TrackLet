@@ -1,9 +1,9 @@
-package com.vertonepa.tracklet.navigation.graphs.main_graph
+package com.vertonepa.tracklet.navigation.graphs
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.vertonepa.tracklet.MainNavigation
+import com.vertonepa.tracklet.navigation.MainNavigation
 import kotlinx.serialization.Serializable
 
 @Serializable

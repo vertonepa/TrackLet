@@ -5,12 +5,19 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.vertonepa.tracklet.tickets.presentation.creation.TicketCreationRoute
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.TicketListRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
 object CreateTicketDestination
+
+@Serializable
+object TicketListDestination
+
+@Serializable
+data object SettingsDestination
 
 fun NavGraphBuilder.creationScreen(
     backToMain: () -> Unit
@@ -37,13 +44,18 @@ fun NavController.navigateToTicketCreation() {
     navigate(CreateTicketDestination)
 }
 
-@Serializable
-object TicketListDestination
+
 
 fun NavGraphBuilder.ticketListScreen(
     navigateToDetails: (Int) -> Unit
 ) {
-    composable<TicketListDestination> {
+    composable<TicketListDestination>(
+        deepLinks = listOf(
+            navDeepLink<TicketListDestination>(
+                basePath = "tracklet://tickets"
+            )
+        )
+    ) {
         TicketListRoute(
             navigateToDetails = navigateToDetails
         )
@@ -60,8 +72,7 @@ fun NavController.navigateToTicketListScreen() {
     }
 }
 
-@Serializable
-data object SettingsDestination
+
 
 fun NavGraphBuilder.settingsScreen() {
     composable<SettingsDestination> { }

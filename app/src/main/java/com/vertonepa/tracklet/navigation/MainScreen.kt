@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet
+package com.vertonepa.tracklet.navigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -25,15 +25,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.vertonepa.tracklet.navigation.CreateTicketDestination
-import com.vertonepa.tracklet.navigation.SettingsDestination
-import com.vertonepa.tracklet.navigation.TicketListDestination
-import com.vertonepa.tracklet.navigation.creationScreen
-import com.vertonepa.tracklet.navigation.navigateToSettings
-import com.vertonepa.tracklet.navigation.navigateToTicketCreation
-import com.vertonepa.tracklet.navigation.navigateToTicketListScreen
-import com.vertonepa.tracklet.navigation.settingsScreen
-import com.vertonepa.tracklet.navigation.ticketListScreen
 import com.vertonepa.tracklet.ui.theme.TrackletTheme
 
 @Composable

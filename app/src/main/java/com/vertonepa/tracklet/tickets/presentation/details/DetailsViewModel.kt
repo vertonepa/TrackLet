@@ -4,34 +4,60 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vertonepa.tracklet.navigation.graphs.details_graph.DetailsDestination
+import com.vertonepa.tracklet.navigation.graphs.DetailsDestination
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
-import com.vertonepa.tracklet.tickets.domain.usecases.DeleteTicketByIdUseCase
-import com.vertonepa.tracklet.tickets.domain.usecases.GetTicketDetailsUseCase
+import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
+import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val getTicketDetailsUseCase: GetTicketDetailsUseCase,
-    private val deleteTicketByIdUseCase: DeleteTicketByIdUseCase,
+    private val repository: TicketsRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val detailsRoute: DetailsDestination = savedStateHandle.toRoute()
+    private val ticketId = savedStateHandle.getStateFlow(
+        key = "ticketIdKey",
+        initialValue = detailsRoute.ticketId
+    ).value
+
     private val _uiState = MutableStateFlow<DetailsUIState>(DetailsUIState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    val isTimecounterActive: StateFlow<Boolean> = repository.getCurrentActiveTimecounter()
+        .map { activeTicket -> activeTicket == ticketId }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
+
+    val timecounterId = repository.getTimecounterId(ticketId).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 0
+    )
+
     private var detailsJob: Job? = null
 
-    private val detailsRoute: DetailsDestination = savedStateHandle.toRoute()
-    private val ticketDetailsId = savedStateHandle.getStateFlow(
-        key = "ticketIdKey",
-        initialValue = detailsRoute.id
-    ).value
+//    private var _estado = repository.getTicketDetailsById(ticketId)
+//        .map { DetailsUIState.Success(it) }
+//        .stateIn(
+//        viewModelScope,
+//        SharingStarted.WhileSubscribed(5000),
+//        DetailsUIState.Loading
+//    )
+//    val estado = _estado
 
     init {
         loadDetails()
@@ -39,16 +65,21 @@ class DetailsViewModel @Inject constructor(
 
     fun loadDetails() {
         detailsJob = viewModelScope.launch {
-            getTicketDetailsUseCase(id = ticketDetailsId).collectLatest {
+            repository.getTicketDetailsById(ticketId).collectLatest {
                 _uiState.value = DetailsUIState.Success(it)
             }
         }
     }
 
+    fun onClickInitNewTimecounter(ticketId: Int) {
+        viewModelScope.launch {
+            repository.initNewTimecounter(Timecounter(ticketId))
+        }
+    }
 
     fun onClickDelete(id: Int) {
         viewModelScope.launch {
-            deleteTicketByIdUseCase(ticketId = id)
+            repository.deleteTicketById(id)
             onDelete()
         }
     }

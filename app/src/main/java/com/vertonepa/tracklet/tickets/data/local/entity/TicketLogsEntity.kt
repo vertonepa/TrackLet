@@ -3,6 +3,7 @@ package com.vertonepa.tracklet.tickets.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
@@ -14,7 +15,8 @@ import java.time.LocalDate
             childColumns = ["ticket_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["ticket_id"])]
 )
 data class TicketLogsEntity(
     @PrimaryKey(autoGenerate = true)
