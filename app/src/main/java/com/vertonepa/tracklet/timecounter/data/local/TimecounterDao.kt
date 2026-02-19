@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TimecounterDao {
 
-    @Query("SELECT ticket_id, timecounter_id, time_logged, log_entry, created_at FROM TimecounterEntity WHERE timecounter_id = :timecounterId")
+    @Query("SELECT ticket_id, timecounter_id, time_logged FROM TimecounterEntity WHERE timecounter_id = :timecounterId")
     fun getTimecounter(timecounterId: Int): Flow<TimecounterLocal?>
 
     @Query("UPDATE TimecounterEntity SET is_active = :isActive WHERE timecounter_id = :timeCounterId")
