@@ -1,5 +1,6 @@
 package com.vertonepa.tracklet.tickets.presentation.creation
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -71,12 +73,20 @@ fun TicketCreationScreen(
     onDescriptionChanged: (String) -> Unit,
     onCreateTicket: () -> Unit,
 ) {
+    val contentResolver = LocalContext.current.contentResolver
     val scrollState = rememberScrollState()
     var showDismissDialog by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
+            uris.forEach { uri ->
+                runCatching {
+                    contentResolver.takePersistableUriPermission(
+                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                }
+            }
             onAddImages(uris)
         }
     )
