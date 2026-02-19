@@ -1,8 +1,9 @@
 package com.vertonepa.tracklet.tickets.data.mappers
 
+import com.vertonepa.tracklet.tickets.data.local.entity.PictureEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketLogsEntity
+import com.vertonepa.tracklet.tickets.data.local.entity.TicketWithPictures
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
-import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketDetailsLocal
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketListLocal
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TotalsLocal
 import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
@@ -14,12 +15,21 @@ import com.vertonepa.tracklet.tickets.domain.model.Totals
 fun TicketCreationModel.toTicketsEntity(): TicketsEntity {
     return TicketsEntity(
         ticketId = this.ticketId,
-        ticketHeading = this.ticketHeading,
-        ticketDescription = this.ticketDescription,
-        ticketPublishDate = this.ticketPublishDate,
+        heading = this.heading,
+        description = this.description,
+        publishDate = this.publishDate,
         paymentState = this.paymentState,
-        ticketTaskProgress = this.ticketTaskProgress
+        taskProgress = this.taskProgress
     )
+}
+
+fun TicketCreationModel.toPictureEntities(): List<PictureEntity> {
+    return this.pictures.map { path ->
+        PictureEntity(
+            path = path,
+            ticketId = this.ticketId
+        )
+    }
 }
 
 fun TicketLog.toEntity(): TicketLogsEntity {
@@ -52,18 +62,21 @@ fun TotalsLocal.toDomain(): Totals {
 fun TicketListLocal.toTicketListModel(): TicketListModel {
     return TicketListModel(
         ticketId = this.ticketId,
-        ticketHeading = this.ticketHeading,
-        ticketPublishDate = this.ticketPublishDate,
+        ticketHeading = this.heading,
+        ticketPublishDate = this.publishDate,
     )
 }
 
-fun TicketDetailsLocal.toTicketDetailsModel(): TicketDetailsModel {
+fun TicketWithPictures.toTicketDetailsModel(): TicketDetailsModel {
+    val ticket = this.ticket
+
     return TicketDetailsModel(
-        ticketId = this.ticketId,
-        ticketHeading = this.ticketHeading,
-        ticketDescription = this.ticketDescription,
-        paymentState = this.paymentState,
-        ticketTaskProgress = this.ticketTaskProgress,
-        ticketPublishDate = this.ticketPublishDate
+        ticketId = ticket.ticketId,
+        ticketHeading = ticket.heading,
+        ticketDescription = ticket.description,
+        paymentState = ticket.paymentState,
+        ticketTaskProgress = ticket.taskProgress,
+        ticketPublishDate = ticket.publishDate,
+        pictures = this.pictures.map { it.path }
     )
 }

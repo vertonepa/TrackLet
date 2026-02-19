@@ -2,9 +2,12 @@ package com.vertonepa.tracklet.tickets.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.vertonepa.tracklet.tickets.data.local.entity.PictureEntity
+import com.vertonepa.tracklet.tickets.data.local.entity.TicketWithPictures
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
-import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketDetailsLocal
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketListLocal
 import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
 import kotlinx.coroutines.flow.Flow
@@ -13,32 +16,38 @@ import kotlinx.coroutines.flow.Flow
 interface TicketsDao {
     @Query(
         """
-        SELECT ticket_id, ticket_heading, ticket_publish_date 
+        SELECT ticket_id, heading, publish_date 
         FROM TicketsEntity 
         ORDER BY ticket_id DESC
         """
     )
     fun getTicketList(): Flow<List<TicketListLocal>>
 
-    @Query(
-        """
-        SELECT ticket_id, ticket_heading, ticket_description, ticket_task_progress, payment_state, ticket_publish_date
-        FROM TicketsEntity
-        WHERE ticket_id = :id
-        """
-    )
-    fun getTicketDetails(id: Int): Flow<TicketDetailsLocal>
+    @Transaction
+    @Query("SELECT * FROM TicketsEntity WHERE ticket_id = :id")
+    fun getTicketDetails(id: Int): Flow<TicketWithPictures>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewTicket(ticket: TicketsEntity): Long
 
-    @Query("UPDATE TicketsEntity SET ticket_heading = :heading WHERE ticket_id = :id")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPictures(pictures: List<PictureEntity>)
+
+    @Transaction
+    @Insert
+    suspend fun insertNewTicketWithPictures(ticket: TicketsEntity, pictures: List<PictureEntity>) {
+        val ticketId = insertNewTicket(ticket)
+        val picturesWithId = pictures.map { it.copy(ticketId = ticketId.toInt()) }
+        insertPictures(picturesWithId)
+    }
+
+    @Query("UPDATE TicketsEntity SET heading = :heading WHERE ticket_id = :id")
     suspend fun updateTicketHeading(id: Int, heading: String)
 
-    @Query("UPDATE TicketsEntity SET ticket_description = :description WHERE ticket_id = :id")
+    @Query("UPDATE TicketsEntity SET description = :description WHERE ticket_id = :id")
     suspend fun updateTicketDescription(id: Int, description: String)
 
-    @Query("UPDATE TicketsEntity SET ticket_task_progress = :taskProgress WHERE ticket_id = :ticketId")
+    @Query("UPDATE TicketsEntity SET task_progress = :taskProgress WHERE ticket_id = :ticketId")
     suspend fun updateTicketProgress(ticketId: Int, taskProgress: String)
 
     @Query("UPDATE TicketsEntity SET payment_state = :changeState WHERE ticket_id = :ticketId")

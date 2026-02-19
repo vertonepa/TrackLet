@@ -60,6 +60,9 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //coil
+    implementation(libs.coil.compose)
+
     //LeakCanary
     debugImplementation(libs.leakcanary.android)
 

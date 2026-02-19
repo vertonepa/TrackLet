@@ -1,5 +1,9 @@
 package com.vertonepa.tracklet.tickets.presentation.creation
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -34,39 +38,48 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.vertonepa.tracklet.core.ui.PicturesPicker
 
 @Composable
 fun TicketCreationRoute(
     viewModel: TicketCreationViewModel = hiltViewModel(),
     backToMain: () -> Unit
 ) {
-    val heading = viewModel.heading
-    val description = viewModel.description
 
     TicketCreationScreen(
         backToMain = backToMain,
-        headingState = heading,
-        descriptionState = description,
+        headingState = viewModel.heading,
+        descriptionState = viewModel.description,
+        pictures = viewModel.pictures,
+        onAddImages = viewModel::onAddImage,
+        onRemoveImages = viewModel::onRemoveImage,
         onHeadingChanged = viewModel::onHeadingChanged,
         onDescriptionChanged = viewModel::onDescriptionChanged,
-        onCreateTicket = viewModel::onCreateTicket,
-        onClearFields = viewModel::onClearFields,
+        onCreateTicket = viewModel::onCreateTicket
     )
 }
 
 @Composable
 fun TicketCreationScreen(
-    backToMain: () -> Unit,
     headingState: String,
     descriptionState: String,
+    pictures: List<Uri>,
+    backToMain: () -> Unit,
+    onAddImages: (List<Uri>) -> Unit,
+    onRemoveImages: (Uri) -> Unit,
     onHeadingChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onCreateTicket: () -> Unit,
-    onClearFields: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     var showDismissDialog by remember { mutableStateOf(false) }
 
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = { uris ->
+            onAddImages(uris)
+        }
+    )
 
     Column(
         Modifier
@@ -82,13 +95,11 @@ fun TicketCreationScreen(
                     showDismissDialog = true
                 else {
                     backToMain()
-                    onClearFields()
                 }
             },
             onCreateTicket = onCreateTicket,
             headingState = headingState,
             descriptionState = descriptionState,
-            onClearFields = onClearFields,
             navigateToTicketListScreen = { backToMain() }
         )
 
@@ -117,6 +128,17 @@ fun TicketCreationScreen(
         Spacer(modifier = Modifier.padding(4.dp))
 
         Text(text = "Adjuntar imagenes")
+        Spacer(modifier = Modifier.padding(4.dp))
+        PicturesPicker(
+            pictures = pictures, onAddElement = {
+                launcher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            },
+            onRemoveElement = {
+                onRemoveImages(it)
+            }
+        )
     }
 
 
@@ -126,7 +148,6 @@ fun TicketCreationScreen(
             confirmButton = {
                 TextButton(onClick = {
                     backToMain()
-                    onClearFields()
                 }) {
                     Text(text = "Confirmar")
                 }
@@ -146,7 +167,6 @@ private fun TopBar(
     onCreateTicket: () -> Unit,
     headingState: String,
     descriptionState: String,
-    onClearFields: () -> Unit,
     navigateToTicketListScreen: () -> Unit,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
@@ -155,7 +175,7 @@ private fun TopBar(
         }
         Text(
             modifier = Modifier.weight(1f),
-            text = "Creación de Ticket",
+            text = "Crear Ticket",
             textAlign = TextAlign.Center
         )
 
@@ -163,7 +183,6 @@ private fun TopBar(
             onClick = {
                 onCreateTicket()
                 navigateToTicketListScreen()
-                onClearFields()
             },
             enabled = headingState.isNotBlank() && descriptionState.isNotBlank(),
         ) {
@@ -179,10 +198,12 @@ private fun Preview() {
     TicketCreationScreen(
         headingState = "",
         descriptionState = "",
+        pictures = emptyList(),
+        onAddImages = {},
+        onRemoveImages = {},
         backToMain = {},
         onHeadingChanged = {},
         onDescriptionChanged = {},
-        onCreateTicket = {},
-        onClearFields = {}
+        onCreateTicket = {}
     )
 }

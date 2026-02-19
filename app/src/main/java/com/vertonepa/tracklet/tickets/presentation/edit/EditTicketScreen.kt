@@ -134,7 +134,8 @@ private fun Preview() {
                 ticketDescription = "Description",
                 paymentState = "Payment",
                 ticketTaskProgress = "En progreso",
-                ticketPublishDate = LocalDate.now()
+                ticketPublishDate = LocalDate.now(),
+                pictures = emptyList()
             )
         ),
         navigateUp = {},

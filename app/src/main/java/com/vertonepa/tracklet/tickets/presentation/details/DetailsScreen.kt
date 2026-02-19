@@ -234,7 +234,8 @@ private fun Preview() {
         ticketDescription = "descripcion",
         paymentState = "Pagado",
         ticketTaskProgress = "Creado",
-        ticketPublishDate = LocalDate.now()
+        ticketPublishDate = LocalDate.now(),
+        pictures = emptyList()
     )
 
     TicketDetailsScreen(
