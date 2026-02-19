@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,12 +33,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.vertonepa.tracklet.R
 import com.vertonepa.tracklet.core.ui.BlockActionDialog
 import com.vertonepa.tracklet.core.ui.TrackletDialog
 import com.vertonepa.tracklet.core.ui.TrackletIcons
@@ -140,12 +147,31 @@ private fun TicketDetailsScreen(
                 ) {
                     Box(
                         modifier = Modifier
+                            .background(Color.LightGray)
                             .fillMaxWidth()
                             .heightIn(min = 300.dp)
                             .aspectRatio(1f)
-                            .fillMaxHeight(0.5f), contentAlignment = Alignment.Center
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text("Imagenes de la db")
+                        val context = LocalContext.current
+                        HorizontalPager(
+                            state = rememberPagerState { ticket.pictures.size },
+                            modifier = Modifier.fillMaxSize()
+                        ) { index ->
+                            AsyncImage(
+                                model = ticket.pictures[index],
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.FillBounds,
+                                onError = {
+                                    ImageRequest.Builder(context).data(
+                                        R.drawable.img_placeholder
+                                    ).build()
+
+                                },
+                            )
+                        }
                     }
                     Text(
                         modifier = Modifier
@@ -235,7 +261,7 @@ private fun Preview() {
         paymentState = "Pagado",
         ticketTaskProgress = "Creado",
         ticketPublishDate = LocalDate.now(),
-        pictures = emptyList()
+        pictures = listOf("https://picsum.photos/id/1/200/200")
     )
 
     TicketDetailsScreen(
