@@ -1,12 +1,11 @@
 package com.vertonepa.tracklet.tickets.data.local.entity.dto
 
 import androidx.room.ColumnInfo
-import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
 import java.time.LocalDate
 
 data class TicketListLocal(
     @ColumnInfo(name = "ticket_id") val ticketId: Int,
-    @ColumnInfo(name = "ticket_heading") val ticketHeading: String,
-    @ColumnInfo(name = "ticket_publish_date") val ticketPublishDate: LocalDate,
+    @ColumnInfo(name = "heading") val heading: String,
+    @ColumnInfo(name = "publish_date") val publishDate: LocalDate,
 )
 

@@ -9,9 +9,9 @@ import java.time.LocalDate
 data class TicketsEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ticket_id") val ticketId: Int = 0,
-    @ColumnInfo(name = "ticket_heading") val ticketHeading: String,
-    @ColumnInfo(name = "ticket_description") val ticketDescription: String,
-    @ColumnInfo(name = "ticket_publish_date") val ticketPublishDate: LocalDate,
-    @ColumnInfo(name = "ticket_task_progress") val ticketTaskProgress: String,
+    @ColumnInfo(name = "heading") val heading: String,
+    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "publish_date") val publishDate: LocalDate,
+    @ColumnInfo(name = "task_progress") val taskProgress: String,
     @ColumnInfo(name = "payment_state") val paymentState: String
 )

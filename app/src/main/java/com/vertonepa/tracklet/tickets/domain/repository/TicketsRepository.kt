@@ -11,7 +11,7 @@ interface TicketsRepository {
 
     fun getTicketDetailsById(ticketId: Int): Flow<TicketDetailsModel>
 
-    suspend fun createNewTicket(newTicket: TicketCreationModel): Long
+    suspend fun createNewTicket(newTicket: TicketCreationModel)
 
     suspend fun updateTicketInfo(ticketId: Int, heading: String?, description: String?)
 

@@ -1,6 +1,7 @@
 package com.vertonepa.tracklet.tickets.data.repository
 
 import com.vertonepa.tracklet.tickets.data.local.dao.TicketsDao
+import com.vertonepa.tracklet.tickets.data.mappers.toPictureEntities
 import com.vertonepa.tracklet.tickets.data.mappers.toTicketDetailsModel
 import com.vertonepa.tracklet.tickets.data.mappers.toTicketListModel
 import com.vertonepa.tracklet.tickets.data.mappers.toTicketsEntity
@@ -24,11 +25,16 @@ class TicketsRepositoryImpl @Inject constructor(
     }
 
     override fun getTicketDetailsById(ticketId: Int): Flow<TicketDetailsModel> {
-        return dao.getTicketDetails(ticketId).map { it.toTicketDetailsModel() }
+        return dao.getTicketDetails(ticketId).map {
+            it.toTicketDetailsModel()
+        }
     }
 
-    override suspend fun createNewTicket(newTicket: TicketCreationModel): Long {
-        return dao.insertNewTicket(newTicket.toTicketsEntity())
+    override suspend fun createNewTicket(newTicket: TicketCreationModel) {
+        dao.insertNewTicketWithPictures(
+            ticket = newTicket.toTicketsEntity(),
+            pictures = newTicket.toPictureEntities()
+        )
     }
 
     override suspend fun updateTicketInfo(ticketId: Int, heading: String?, description: String?) {

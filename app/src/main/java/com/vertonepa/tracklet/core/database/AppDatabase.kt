@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.vertonepa.tracklet.tickets.data.local.dao.TicketLogsDao
 import com.vertonepa.tracklet.tickets.data.local.dao.TicketsDao
+import com.vertonepa.tracklet.tickets.data.local.entity.PictureEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketLogsEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
 import com.vertonepa.tracklet.timecounter.data.local.TimecounterDao
@@ -12,7 +13,7 @@ import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
 
 
 @Database(
-    entities = [TicketsEntity::class, TicketLogsEntity::class, TimecounterEntity::class],
+    entities = [TicketsEntity::class, TicketLogsEntity::class, TimecounterEntity::class, PictureEntity::class],
     version = 1,
     exportSchema = false
 )
