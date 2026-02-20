@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -35,12 +33,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vertonepa.tracklet.core.ui.PicturesPicker
+import com.vertonepa.tracklet.core.ui.TrackletIcons
 
 @Composable
 fun TicketCreationRoute(
@@ -94,7 +94,7 @@ fun TicketCreationScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color.Companion.White)
+            .background(Color.White)
             .padding(16.dp)
             .scrollable(state = scrollState, orientation = Orientation.Vertical),
     ) {
@@ -181,7 +181,7 @@ private fun TopBar(
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onClickClose) {
-            Icon(imageVector = Icons.Default.Close, contentDescription = null)
+            Icon(painterResource(TrackletIcons.Close), contentDescription = null)
         }
         Text(
             modifier = Modifier.weight(1f),
