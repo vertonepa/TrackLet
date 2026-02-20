@@ -1,24 +1,24 @@
 [versions]
-agp = "8.12.0"
-coilCompose = "2.7.0"
-kotlin = "2.0.21"
-coreKtx = "1.16.0"
+agp = "9.0.1"
+kotlin = "2.3.10"
+kspVersion = "2.3.5"
+coreKtx = "1.17.0"
+activityCompose = "1.12.4"
+lifecycleRuntimeKtx = "2.10.0"
+composeBom = "2026.02.00"
+navigationCompose = "2.9.7"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 leakcanaryAndroid = "2.14"
-lifecycleRuntimeKtx = "2.9.2"
-activityCompose = "1.10.1"
-composeBom = "2025.07.00"
-kspVersion = "2.0.21-1.0.28"
-navigationCompose = "2.9.2"
-mockk = "1.14.5"
-kotlinxSerializationJsonJvm = "1.7.3"
-roomRuntime = "2.7.2"
-turbine = "1.2.0"
+coilCompose = "2.7.0"
+mockk = "1.14.9"
+kotlinxSerializationJsonJvm = "1.10.0"
+turbine = "1.2.1"
 desugar_jdk_libs = "2.1.5"
-hiltAndroid = "2.56"
-hiltNavigationCompose = "1.2.0"
+roomRuntime = "2.8.4"
+hiltAndroid = "2.59.1"
+hiltNavigationCompose = "1.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,7 +58,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 #Hilt-plug
 dagger-hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
