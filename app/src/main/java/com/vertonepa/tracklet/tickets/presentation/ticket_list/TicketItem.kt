@@ -1,14 +1,14 @@
 package com.vertonepa.tracklet.tickets.presentation.ticket_list
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.vertonepa.tracklet.core.ui.TrackletIcons
 import java.time.LocalDate
 
 @Composable
@@ -24,7 +24,7 @@ fun TicketItem(
         supportingContent = { Text(date.toString()) },
         trailingContent = {
             Icon(
-                Icons.Default.Delete,
+                painter = painterResource(TrackletIcons.Delete),
                 contentDescription = null,
                 modifier = Modifier.clickable { deleteTicket() }
             )

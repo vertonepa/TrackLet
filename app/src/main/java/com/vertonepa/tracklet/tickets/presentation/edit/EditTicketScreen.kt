@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,9 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vertonepa.tracklet.core.ui.TrackletIcons
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import java.time.LocalDate
 
@@ -74,7 +74,7 @@ fun EditTicketScreen(
                     navigationIcon = {
                         IconButton(onClick = { navigateUp() }) {
                             Icon(
-                                imageVector = Icons.Default.Close,
+                                painter = painterResource(TrackletIcons.Close),
                                 contentDescription = null
                             )
                         }
@@ -91,7 +91,7 @@ fun EditTicketScreen(
             }) { paddingValues ->
                 Column(
                     modifier = Modifier
-                        .background(Color.Companion.White)
+                        .background(Color.White)
                         .fillMaxSize()
                         .padding(top = paddingValues.calculateTopPadding())
                 ) {
@@ -116,7 +116,7 @@ private fun LoadingDetailsScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Companion.Gray),
+            .background(Color.Gray),
         contentAlignment = Alignment.Center
     ) {
         LinearProgressIndicator()

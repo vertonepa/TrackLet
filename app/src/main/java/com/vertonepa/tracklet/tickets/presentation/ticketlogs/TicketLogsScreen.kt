@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,12 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vertonepa.tracklet.core.ui.BottomSheetOptions
 import com.vertonepa.tracklet.core.ui.TrackletBottomSheet
+import com.vertonepa.tracklet.core.ui.TrackletIcons
 import com.vertonepa.tracklet.tickets.domain.model.TicketLog
 import com.vertonepa.tracklet.tickets.domain.model.enums.PaymentState
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.LoadingScreen
@@ -112,7 +110,7 @@ fun TicketLogsScreen(
                     navigationIcon = {
                         IconButton(onClick = navigateToBack) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                painter = painterResource(TrackletIcons.Back),
                                 contentDescription = null
                             )
                         }
@@ -129,7 +127,7 @@ fun TicketLogsScreen(
                     }
                 ) {
                     Icon(
-                        Icons.Default.Add,
+                        painter = painterResource(TrackletIcons.Add),
                         contentDescription = null,
                     )
                 }
@@ -183,7 +181,7 @@ fun TicketLogsScreen(
                 if (isSheetOpen) {
                     val options: List<BottomSheetOptions> = listOf(
                         BottomSheetOptions(
-                            imageVector = Icons.Default.Delete,
+                            painter = painterResource(TrackletIcons.Delete),
                             title = "Eliminar",
                             action = {
                                 isSheetOpen = false

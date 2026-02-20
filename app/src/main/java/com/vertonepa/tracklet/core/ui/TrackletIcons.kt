@@ -19,4 +19,9 @@ object TrackletIcons {
     @DrawableRes val Timecounter = R.drawable.ic_timecounter
     @DrawableRes val KebabMenu = R.drawable.ic_kebab_menu
     @DrawableRes val Add = R.drawable.ic_add
+    @DrawableRes val Edit = R.drawable.ic_edit
+    @DrawableRes val Delete = R.drawable.ic_delete
+
+    @DrawableRes val Settings = R.drawable.ic_settings
+    @DrawableRes val Home = R.drawable.ic_home
 }

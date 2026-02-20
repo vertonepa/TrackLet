@@ -2,13 +2,9 @@ package com.vertonepa.tracklet.tickets.presentation.ticketlogs.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.Close
-import androidx.compose.material.icons.sharp.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -23,10 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.vertonepa.tracklet.core.ui.TrackletIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,12 +45,12 @@ fun MultiSelectionTopBar(
         actions = {
             IconButton(onClick = onDelete) {
                 Icon(
-                    imageVector = Icons.Sharp.Delete, contentDescription = "Eliminar"
+                    painter = painterResource(TrackletIcons.Delete), contentDescription = "Eliminar"
                 )
             }
             IconButton(onClick = onCancelActions) {
                 Icon(
-                    imageVector = Icons.Sharp.Close, contentDescription = "Cancelar"
+                    painter = painterResource(TrackletIcons.Close), contentDescription = "Cancelar"
                 )
             }
         })
@@ -61,7 +59,7 @@ fun MultiSelectionTopBar(
 
 @Composable
 fun DeleteDialog(
-    onDismiss: () -> Unit ,
+    onDismiss: () -> Unit,
     onDelete: () -> Unit
 ) {
     Dialog(
