@@ -141,7 +141,7 @@ private fun TicketDetailsScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Companion.White)
+                        .background(Color.White)
                         .padding(paddingValues)
                         .verticalScroll(scrollState)
                 ) {
@@ -212,8 +212,7 @@ private fun TicketDetailsScreen(
                     onDismissRequest = { showDialog = false },
                     confirmButton = {
                         onInitNewTimecounter(ticket.ticketId)
-                        showDialog = false
-
+                        navigateToTimecounter(ticket.ticketId)
 
                         //mostrar snackbar de creación de Timecounter
                     },
@@ -244,7 +243,7 @@ private fun LoadingDetailsScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Companion.Gray),
+            .background(Color.Gray),
         contentAlignment = Alignment.Center
     ) {
         LinearProgressIndicator()
@@ -267,7 +266,7 @@ private fun Preview() {
     TicketDetailsScreen(
         uiState = DetailsUIState.Success(ticket),
         timecounterId = 0,
-        isTimecounterActive = false,
+        isTimecounterActive = true,
         onClickDelete = {},
         onInitNewTimecounter = {},
         navigateToBack = {},

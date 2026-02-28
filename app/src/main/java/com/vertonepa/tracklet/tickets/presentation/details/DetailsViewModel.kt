@@ -50,15 +50,6 @@ class DetailsViewModel @Inject constructor(
 
     private var detailsJob: Job? = null
 
-//    private var _estado = repository.getTicketDetailsById(ticketId)
-//        .map { DetailsUIState.Success(it) }
-//        .stateIn(
-//        viewModelScope,
-//        SharingStarted.WhileSubscribed(5000),
-//        DetailsUIState.Loading
-//    )
-//    val estado = _estado
-
     init {
         loadDetails()
     }
@@ -91,7 +82,7 @@ class DetailsViewModel @Inject constructor(
 
 }
 
-sealed class DetailsUIState() {
+sealed class DetailsUIState {
     data object Loading : DetailsUIState()
     data class Success(val ticketDetails: TicketDetailsModel) : DetailsUIState()
     data object Error : DetailsUIState()
