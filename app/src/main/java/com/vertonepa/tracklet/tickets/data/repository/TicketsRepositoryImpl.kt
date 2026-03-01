@@ -58,8 +58,8 @@ class TicketsRepositoryImpl @Inject constructor(
         dao.deleteTicket(ticketId)
     }
 
-    override fun getCurrentActiveTimecounter(): Flow<Int?> {
-        return dao.getActiveTimecounter()
+    override fun getTicketIdFromTheActiveTimecounter(): Flow<Int> {
+        return dao.getTicketIdFromTheActiveTimecounter()
     }
 
     override suspend fun initNewTimecounter(timecounter: Timecounter) {
@@ -67,6 +67,6 @@ class TicketsRepositoryImpl @Inject constructor(
     }
 
     override fun getTimecounterId(timecounterId: Int): Flow<Int> {
-        return dao.getActiveTimecounterId(timecounterId)
+        return dao.getTheActiveTimecounterId(timecounterId)
     }
 }
