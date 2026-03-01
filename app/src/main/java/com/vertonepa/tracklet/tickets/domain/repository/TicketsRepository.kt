@@ -19,7 +19,7 @@ interface TicketsRepository {
 
     suspend fun deleteTicketById(ticketId: Int)
 
-    fun getCurrentActiveTimecounter(): Flow<Int?>
+    fun getTicketIdFromTheActiveTimecounter(): Flow<Int>
 
     suspend fun initNewTimecounter(timecounter: Timecounter)
 

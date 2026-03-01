@@ -57,10 +57,10 @@ interface TicketsDao {
     suspend fun deleteTicket(id: Int): Int
 
     @Query("SELECT ticket_id FROM TimecounterEntity WHERE is_active = 1 LIMIT 1")
-    fun getActiveTimecounter(): Flow<Int?>
+    fun getTicketIdFromTheActiveTimecounter(): Flow<Int>
 
     @Query("SELECT timecounter_id FROM TimecounterEntity WHERE ticket_id = :ticketId AND is_active = 1")
-    fun getActiveTimecounterId(ticketId: Int): Flow<Int>
+    fun getTheActiveTimecounterId(ticketId: Int): Flow<Int>
 
     @Insert
     suspend fun insertTimecounter(timecounter: TimecounterEntity)

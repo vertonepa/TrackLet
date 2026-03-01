@@ -22,30 +22,38 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val repository: TicketsRepository,
-    savedStateHandle: SavedStateHandle
+    private val repository: TicketsRepository, savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val detailsRoute: DetailsDestination = savedStateHandle.toRoute()
     private val ticketId = savedStateHandle.getStateFlow(
-        key = "ticketIdKey",
-        initialValue = detailsRoute.ticketId
+        key = "ticketIdKey", initialValue = detailsRoute.ticketId
     ).value
 
     private val _uiState = MutableStateFlow<DetailsUIState>(DetailsUIState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    val isTimecounterActive: StateFlow<Boolean> = repository.getCurrentActiveTimecounter()
-        .map { activeTicket -> activeTicket == ticketId }
+    val isThereAnActiveTimecounterOnThisTicket: StateFlow<Boolean> =
+        repository.getTicketIdFromTheActiveTimecounter()
+            .map { ticketIdFromTheActiveTimecounter -> ticketIdFromTheActiveTimecounter == ticketId }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = false
+            )
+
+    val isThereAnActiveTimecounterInTheApp: StateFlow<Boolean> = repository.getTicketIdFromTheActiveTimecounter()
+        .map { ticketIdFromTheActiveTimecounter ->
+            ticketIdFromTheActiveTimecounter != 0 && ticketIdFromTheActiveTimecounter != ticketId
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = false
         )
 
+
     val timecounterId = repository.getTimecounterId(ticketId).stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0
     )
 
     private var detailsJob: Job? = null

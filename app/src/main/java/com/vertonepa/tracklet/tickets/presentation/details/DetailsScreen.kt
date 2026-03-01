@@ -60,13 +60,15 @@ fun TicketDetailsRoute(
     navigateToTimecounter: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isTimecounterActive by viewModel.isTimecounterActive.collectAsStateWithLifecycle()
+    val isThereAnActiveTimecounterOnThisTicket by viewModel.isThereAnActiveTimecounterOnThisTicket.collectAsStateWithLifecycle()
+    val isThereAnActiveTimecounterInTheApp by viewModel.isThereAnActiveTimecounterInTheApp.collectAsStateWithLifecycle()
     val timecounterId by viewModel.timecounterId.collectAsStateWithLifecycle()
 
     TicketDetailsScreen(
         uiState = uiState,
         timecounterId = timecounterId,
-        isTimecounterActive = isTimecounterActive,
+        isThereAnActiveTimecounterOnThisTicket = isThereAnActiveTimecounterOnThisTicket,
+        isThereAnActiveTimecounterInTheApp = isThereAnActiveTimecounterInTheApp,
         onClickDelete = { viewModel.onClickDelete(it) },
         onInitNewTimecounter = { viewModel.onClickInitNewTimecounter(it) },
         navigateToBack = { navigateUp() },
@@ -80,7 +82,8 @@ fun TicketDetailsRoute(
 private fun TicketDetailsScreen(
     uiState: DetailsUIState,
     timecounterId: Int,
-    isTimecounterActive: Boolean,
+    isThereAnActiveTimecounterOnThisTicket: Boolean,
+    isThereAnActiveTimecounterInTheApp: Boolean,
     onClickDelete: (Int) -> Unit,
     onInitNewTimecounter: (Int) -> Unit,
     navigateToBack: () -> Unit,
@@ -110,7 +113,7 @@ private fun TicketDetailsScreen(
                         }
                     }, actions = {
                         when {
-                            isTimecounterActive -> {
+                            isThereAnActiveTimecounterOnThisTicket -> {
                                 IconButton(onClick = {
                                     navigateToTimecounter(timecounterId)
                                 }) {
@@ -122,7 +125,7 @@ private fun TicketDetailsScreen(
                                 }
                             }
 
-                            !isTimecounterActive -> {
+                            !isThereAnActiveTimecounterOnThisTicket -> {
                                 IconButton(onClick = { showDialog = true }) {
                                     Icon(
                                         painter = painterResource(TrackletIcons.Timecounter),
@@ -207,10 +210,11 @@ private fun TicketDetailsScreen(
                 }
             }
 
-            if (!isTimecounterActive && showDialog) {
+            if (!isThereAnActiveTimecounterOnThisTicket && showDialog) {
                 TrackletDialog(
                     onDismissRequest = { showDialog = false },
                     confirmButton = {
+                        showDialog = false
                         onInitNewTimecounter(ticket.ticketId)
                         navigateToTimecounter(ticket.ticketId)
 
@@ -221,7 +225,7 @@ private fun TicketDetailsScreen(
                 )
             }
 
-            if (isTimecounterActive && showDialog) {
+            if (isThereAnActiveTimecounterInTheApp && showDialog) {
                 BlockActionDialog(
                     onDismissRequest = { showDialog = false },
                     confirmButton = { showDialog = false },
@@ -266,7 +270,8 @@ private fun Preview() {
     TicketDetailsScreen(
         uiState = DetailsUIState.Success(ticket),
         timecounterId = 0,
-        isTimecounterActive = true,
+        isThereAnActiveTimecounterOnThisTicket = true,
+        isThereAnActiveTimecounterInTheApp = true,
         onClickDelete = {},
         onInitNewTimecounter = {},
         navigateToBack = {},
