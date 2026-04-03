@@ -9,7 +9,7 @@ import androidx.navigation.toRoute
 import com.vertonepa.tracklet.tickets.presentation.details.TicketDetailsRoute
 import com.vertonepa.tracklet.tickets.presentation.edit.EditTicketRoute
 import com.vertonepa.tracklet.tickets.presentation.ticketlogs.TicketLogsRoute
-import com.vertonepa.tracklet.timecounter.presentation.TimecounterRoute
+import com.vertonepa.tracklet.tickets.presentation.timecounter.TimecounterRoute
 import kotlinx.serialization.Serializable
 
 @Serializable

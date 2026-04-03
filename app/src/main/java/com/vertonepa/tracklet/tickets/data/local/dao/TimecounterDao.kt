@@ -1,7 +1,8 @@
-package com.vertonepa.tracklet.timecounter.data.local
+package com.vertonepa.tracklet.tickets.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.vertonepa.tracklet.tickets.data.local.entity.dto.TimecounterLocal
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -9,7 +9,7 @@ import com.vertonepa.tracklet.tickets.data.local.entity.PictureEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketWithPictures
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.dto.TicketListLocal
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
+import com.vertonepa.tracklet.tickets.data.local.entity.TimecounterEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

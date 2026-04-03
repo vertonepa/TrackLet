@@ -1,6 +1,6 @@
-package com.vertonepa.tracklet.timecounter.presentation
+package com.vertonepa.tracklet.tickets.presentation.timecounter
 
-import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterInfo
+import com.vertonepa.tracklet.tickets.domain.model.TimecounterInfo
 
 sealed class TimecounterUiState {
 

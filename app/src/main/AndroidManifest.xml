@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".timecounter.presentation.service.TimecounterService"
+            android:name=".tickets.service.TimecounterService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse">

@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation
+package com.vertonepa.tracklet.tickets.presentation.timecounter
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
@@ -36,12 +36,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vertonepa.tracklet.core.ui.TrackletDialog
 import com.vertonepa.tracklet.core.ui.TrackletIcons
 import com.vertonepa.tracklet.tickets.presentation.ticket_list.LoadingScreen
-import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterInfo
-import com.vertonepa.tracklet.timecounter.presentation.service.TCServiceHelper
-import com.vertonepa.tracklet.timecounter.presentation.utils.Time
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterState
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues
-import com.vertonepa.tracklet.timecounter.presentation.utils.formatToString
+import com.vertonepa.tracklet.tickets.domain.model.TimecounterInfo
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.Time
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterState
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues
+import com.vertonepa.tracklet.tickets.service.TCServiceHelper
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.formatToString
 
 @Composable
 fun TimecounterRoute(
@@ -77,7 +77,7 @@ fun TimecounterScreen(
     if (!LocalInspectionMode.current) {
         LaunchedEffect(shouldShowDialog) {
             if (shouldShowDialog) {
-                TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                TCServiceHelper.triggerService(context, TimecounterValues.Companion.PAUSE)
             }
         }
     }
@@ -105,7 +105,7 @@ fun TimecounterScreen(
                     IconButton(modifier = Modifier.size(48.dp), onClick = {
                         if (timecounterState != TimecounterState.NOT_INITIALIZED) {
                             showStopDialog = true
-                            TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                            TCServiceHelper.triggerService(context, TimecounterValues.Companion.PAUSE)
                         }
                     }) {
                         Icon(
@@ -119,13 +119,13 @@ fun TimecounterScreen(
                     }
                     IconButton(modifier = Modifier.size(60.dp), onClick = {
                         if (timecounterState == TimecounterState.NOT_INITIALIZED) {
-                            TCServiceHelper.triggerService(context, TimecounterValues.START)
+                            TCServiceHelper.triggerService(context, TimecounterValues.Companion.START)
                         }
                         if (timecounterState == TimecounterState.RESUMED) {
-                            TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                            TCServiceHelper.triggerService(context, TimecounterValues.Companion.PAUSE)
                         }
                         if (timecounterState == TimecounterState.PAUSED) {
-                            TCServiceHelper.triggerService(context, TimecounterValues.RESUME)
+                            TCServiceHelper.triggerService(context, TimecounterValues.Companion.RESUME)
                         }
                     }) {
                         Icon(
@@ -155,7 +155,7 @@ fun TimecounterScreen(
                         modifier = Modifier.size(60.dp),
                         onClick = {
                             if (timecounterState != TimecounterState.NOT_INITIALIZED) {
-                                TCServiceHelper.triggerService(context, TimecounterValues.PAUSE)
+                                TCServiceHelper.triggerService(context, TimecounterValues.Companion.PAUSE)
                                 showCancelDialog = true
                             }
                         }
@@ -182,7 +182,7 @@ fun TimecounterScreen(
                     confirmButton = {
                         showStopDialog = false
                         TCServiceHelper.triggerService(
-                            context, TimecounterValues.STOP
+                            context, TimecounterValues.Companion.STOP
                         )
                         navigateUp()
                     },
@@ -201,7 +201,7 @@ fun TimecounterScreen(
                     confirmButton = {
                         showCancelDialog = false
                         TCServiceHelper.triggerService(
-                            context, TimecounterValues.CANCEL
+                            context, TimecounterValues.Companion.CANCEL
                         )
                         navigateUp()
                     },

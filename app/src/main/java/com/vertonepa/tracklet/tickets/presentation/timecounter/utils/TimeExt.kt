@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation.utils
+package com.vertonepa.tracklet.tickets.presentation.timecounter.utils
 
 import java.util.Locale
 

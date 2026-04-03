@@ -9,8 +9,8 @@ import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
 import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
-import com.vertonepa.tracklet.timecounter.data.toEntity
-import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.tickets.data.mappers.toEntity
+import com.vertonepa.tracklet.tickets.domain.model.Timecounter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

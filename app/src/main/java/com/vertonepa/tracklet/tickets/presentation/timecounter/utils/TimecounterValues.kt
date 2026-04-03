@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation.utils
+package com.vertonepa.tracklet.tickets.presentation.timecounter.utils
 
 abstract class TimecounterValues {
     companion object {
@@ -9,8 +9,6 @@ abstract class TimecounterValues {
         const val RESUME = "RESUME"
         const val STOP = "STOP"
         const val CANCEL = "CANCEL"
-
-        const val DEEP_LINK_TIMECOUNTER = "tracklet://tickets"
 
         const val NOTIFICATION_ID = 1
         const val SERVICE_NOTIFICATION_CHANNEL_ID = "Timecounter"

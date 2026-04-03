@@ -8,8 +8,8 @@ import com.vertonepa.tracklet.tickets.data.local.dao.TicketsDao
 import com.vertonepa.tracklet.tickets.data.local.entity.PictureEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketLogsEntity
 import com.vertonepa.tracklet.tickets.data.local.entity.TicketsEntity
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterDao
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
+import com.vertonepa.tracklet.tickets.data.local.dao.TimecounterDao
+import com.vertonepa.tracklet.tickets.data.local.entity.TimecounterEntity
 
 
 @Database(
