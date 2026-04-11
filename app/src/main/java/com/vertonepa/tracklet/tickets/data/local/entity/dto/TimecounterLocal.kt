@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.data.local
+package com.vertonepa.tracklet.tickets.data.local.entity.dto
 
 import androidx.room.ColumnInfo
 

@@ -1,6 +1,6 @@
-package com.vertonepa.tracklet.timecounter.data
+package com.vertonepa.tracklet.tickets.domain.repository
 
-import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterInfo
+import com.vertonepa.tracklet.tickets.domain.model.TimecounterInfo
 import kotlinx.coroutines.flow.Flow
 
 interface TimecounterRepository {

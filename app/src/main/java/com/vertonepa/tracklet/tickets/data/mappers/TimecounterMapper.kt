@@ -1,9 +1,9 @@
-package com.vertonepa.tracklet.timecounter.data
+package com.vertonepa.tracklet.tickets.data.mappers
 
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterEntity
-import com.vertonepa.tracklet.timecounter.data.local.TimecounterLocal
-import com.vertonepa.tracklet.timecounter.presentation.model.TimecounterInfo
-import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.tickets.data.local.entity.TimecounterEntity
+import com.vertonepa.tracklet.tickets.data.local.entity.dto.TimecounterLocal
+import com.vertonepa.tracklet.tickets.domain.model.TimecounterInfo
+import com.vertonepa.tracklet.tickets.domain.model.Timecounter
 
 fun TimecounterLocal.toTimecounterInfo(): TimecounterInfo {
     return TimecounterInfo(

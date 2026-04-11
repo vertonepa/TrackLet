@@ -3,7 +3,7 @@ package com.vertonepa.tracklet.tickets.domain.repository
 import com.vertonepa.tracklet.tickets.domain.model.TicketCreationModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.model.TicketListModel
-import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.tickets.domain.model.Timecounter
 import kotlinx.coroutines.flow.Flow
 
 interface TicketsRepository {

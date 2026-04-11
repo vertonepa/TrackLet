@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.vertonepa.tracklet"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -37,11 +37,13 @@ android {
     buildFeatures {
         compose = true
     }
-    kotlin {
-        jvmToolchain(21)
+}
+kotlin {
+    jvmToolchain(21)
+    compilerOptions {
+        freeCompilerArgs.add("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 }
-
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

@@ -39,7 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -171,7 +171,6 @@ private fun TicketDetailsScreen(
                                     ImageRequest.Builder(context).data(
                                         R.drawable.img_placeholder
                                     ).build()
-
                                 },
                             )
                         }
@@ -210,14 +209,12 @@ private fun TicketDetailsScreen(
                 }
             }
 
-            if (!isThereAnActiveTimecounterOnThisTicket && showDialog) {
+            if (!isThereAnActiveTimecounterOnThisTicket && showDialog && !isThereAnActiveTimecounterInTheApp) {
                 TrackletDialog(
                     onDismissRequest = { showDialog = false },
                     confirmButton = {
                         showDialog = false
                         onInitNewTimecounter(ticket.ticketId)
-                        navigateToTimecounter(ticket.ticketId)
-
                         //mostrar snackbar de creación de Timecounter
                     },
                     dismissButton = { showDialog = false },
@@ -225,7 +222,7 @@ private fun TicketDetailsScreen(
                 )
             }
 
-            if (isThereAnActiveTimecounterInTheApp && showDialog) {
+            if (showDialog && isThereAnActiveTimecounterInTheApp) {
                 BlockActionDialog(
                     onDismissRequest = { showDialog = false },
                     confirmButton = { showDialog = false },

@@ -7,14 +7,12 @@ import androidx.navigation.toRoute
 import com.vertonepa.tracklet.navigation.graphs.DetailsDestination
 import com.vertonepa.tracklet.tickets.domain.model.TicketDetailsModel
 import com.vertonepa.tracklet.tickets.domain.repository.TicketsRepository
-import com.vertonepa.tracklet.timecounter.presentation.model.Timecounter
+import com.vertonepa.tracklet.tickets.domain.model.Timecounter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -30,7 +28,13 @@ class DetailsViewModel @Inject constructor(
     ).value
 
     private val _uiState = MutableStateFlow<DetailsUIState>(DetailsUIState.Loading)
-    val uiState = _uiState.asStateFlow()
+    val uiState = repository.getTicketDetailsById(ticketId)
+        .map { DetailsUIState.Success(it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = DetailsUIState.Loading
+        )
 
     val isThereAnActiveTimecounterOnThisTicket: StateFlow<Boolean> =
         repository.getTicketIdFromTheActiveTimecounter()
@@ -41,34 +45,26 @@ class DetailsViewModel @Inject constructor(
                 initialValue = false
             )
 
-    val isThereAnActiveTimecounterInTheApp: StateFlow<Boolean> = repository.getTicketIdFromTheActiveTimecounter()
-        .map { ticketIdFromTheActiveTimecounter ->
-            ticketIdFromTheActiveTimecounter != 0 && ticketIdFromTheActiveTimecounter != ticketId
-        }
+    val isThereAnActiveTimecounterInTheApp: StateFlow<Boolean> =
+        repository.getTicketIdFromTheActiveTimecounter()
+            .map { ticketIdFromTheActiveTimecounter ->
+                ticketIdFromTheActiveTimecounter != 0 && ticketIdFromTheActiveTimecounter != ticketId
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = false
+            )
+
+    val timecounterId = repository
+        .getTimecounterId(ticketId)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
+            initialValue = 0
         )
 
-
-    val timecounterId = repository.getTimecounterId(ticketId).stateIn(
-        scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = 0
-    )
-
     private var detailsJob: Job? = null
-
-    init {
-        loadDetails()
-    }
-
-    fun loadDetails() {
-        detailsJob = viewModelScope.launch {
-            repository.getTicketDetailsById(ticketId).collectLatest {
-                _uiState.value = DetailsUIState.Success(it)
-            }
-        }
-    }
 
     fun onClickInitNewTimecounter(ticketId: Int) {
         viewModelScope.launch {

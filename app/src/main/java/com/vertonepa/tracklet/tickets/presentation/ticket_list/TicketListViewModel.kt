@@ -36,7 +36,7 @@ class TicketListViewModel @Inject constructor(
     }
 }
 
-sealed class TicketListUIState() {
+sealed class TicketListUIState {
     data object Loading : TicketListUIState()
 
     data object EmptyList : TicketListUIState()

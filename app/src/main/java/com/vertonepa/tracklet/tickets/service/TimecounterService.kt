@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation.service
+package com.vertonepa.tracklet.tickets.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,18 +8,17 @@ import android.content.pm.ServiceInfo
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.vertonepa.tracklet.R
 import com.vertonepa.tracklet.core.ui.TrackletIcons
-import com.vertonepa.tracklet.timecounter.data.TimecounterRepository
-import com.vertonepa.tracklet.timecounter.presentation.utils.Time
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterState
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.NOTIFICATION_ID
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.SERVICE_NOTIFICATION_CHANNEL_ID
-import com.vertonepa.tracklet.timecounter.presentation.utils.formatToString
-import com.vertonepa.tracklet.timecounter.presentation.utils.totalInSeconds
+import com.vertonepa.tracklet.tickets.domain.repository.TimecounterRepository
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.Time
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterState
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues.Companion.NOTIFICATION_ID
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues.Companion.SERVICE_NOTIFICATION_CHANNEL_ID
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.formatToString
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.totalInSeconds
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +49,7 @@ class TimecounterService : Service() {
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManager
     private var duration: Duration = Duration.ZERO
-    private val binder = TimeCounterBinder(this)
+    private val binder: TimeCounterBinder = TimeCounterBinder(this)
     private var lastTickTimestamp: Long = 0L
     private var counterJob: Job? = null
 
@@ -100,7 +99,7 @@ class TimecounterService : Service() {
         super.onDestroy()
     }
 
-    override fun onBind(intent: Intent?): IBinder? = binder
+    override fun onBind(intent: Intent?): IBinder = binder
 
     override fun onStartCommand(
         intent: Intent?, flags: Int, startId: Int
@@ -179,7 +178,7 @@ class TimecounterService : Service() {
         _isTimecounterPaused.value = false
         changeNotificationButton(isTimecounterPaused.value)
 
-        counterJob = serviceScope.launch {
+        counterJob = serviceScope.launch(Dispatchers.Default) {
             lastTickTimestamp = System.currentTimeMillis()
 
             while (isActive && isTimecounterActive.value) {
@@ -279,9 +278,14 @@ class TimecounterService : Service() {
     }
 
     private fun changeNotificationButton(isPaused: Boolean) {
-        Log.d("TimecounterService", "private val ticketId: Int get() = $ticketId")
         notificationBuilder.clearActions()
-        notificationBuilder.setContentIntent(TCServiceHelper.clickNotification(this, ticketId, timecounterId))
+        notificationBuilder.setContentIntent(
+            TCServiceHelper.clickNotification(
+                this,
+                ticketId,
+                timecounterId
+            )
+        )
         notificationBuilder.addAction(
             TrackletIcons.StopNotif,
             TimecounterValues.STOP,
@@ -305,7 +309,7 @@ class TimecounterService : Service() {
 
 
     class TimeCounterBinder(service: TimecounterService) : Binder() {
-        private val serviceRef = WeakReference(service)
+        private var serviceRef = WeakReference(service)
         fun getService(): TimecounterService? = serviceRef.get()
     }
 }

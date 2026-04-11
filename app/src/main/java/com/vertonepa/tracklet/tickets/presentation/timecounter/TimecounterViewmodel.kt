@@ -1,14 +1,13 @@
-package com.vertonepa.tracklet.timecounter.presentation
+package com.vertonepa.tracklet.tickets.presentation.timecounter
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.vertonepa.tracklet.navigation.graphs.TimecounterDestination
-import com.vertonepa.tracklet.timecounter.presentation.service.ServiceConnector
-import com.vertonepa.tracklet.timecounter.presentation.utils.Time
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterState
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.Time
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterState
+import com.vertonepa.tracklet.tickets.service.ServiceConnector
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +37,6 @@ class TimecounterViewmodel @Inject constructor(
     )
 
     val uiState: StateFlow<TimecounterUiState> = connector.timecounter.map { timecounterFromService ->
-        Log.d("TimecounterViewmodel", "timecounter recibido: $timecounterFromService")
         if (timecounterFromService == null) {
             TimecounterUiState.Loading
         } else {
@@ -51,7 +49,6 @@ class TimecounterViewmodel @Inject constructor(
     )
 
     init {
-        Log.d("TimecounterViewmodel", "ID recibido en timecounterviewmodel: $timecounterId")
         connector.connectWithTimecounterById(timecounterId)
         connector.bind()
     }

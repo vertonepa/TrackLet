@@ -1,12 +1,12 @@
-package com.vertonepa.tracklet.timecounter.presentation.service
+package com.vertonepa.tracklet.tickets.service
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import com.vertonepa.tracklet.timecounter.presentation.utils.Time
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterState
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.Time
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

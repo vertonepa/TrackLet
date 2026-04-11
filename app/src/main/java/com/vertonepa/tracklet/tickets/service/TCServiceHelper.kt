@@ -1,4 +1,4 @@
-package com.vertonepa.tracklet.timecounter.presentation.service
+package com.vertonepa.tracklet.tickets.service
 
 import android.app.PendingIntent
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.Intent
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.vertonepa.tracklet.MainActivity
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues
-import com.vertonepa.tracklet.timecounter.presentation.utils.TimecounterValues.Companion.TIMECOUNTER_STATE
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues
+import com.vertonepa.tracklet.tickets.presentation.timecounter.utils.TimecounterValues.Companion.TIMECOUNTER_STATE
 
 object TCServiceHelper {
     private const val FLAG = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
